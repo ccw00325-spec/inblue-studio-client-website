@@ -1,0 +1,9 @@
+{
+  "date": "2026-10-17",
+  "framework": "vanilla HTML",
+  "font_stack": "Cormorant Garamond + Pretendard + Inter",
+  "palette": "navy / blue / mist / sand",
+  "motion": "CSS transitions and vanilla JavaScript reveals",
+  "spacing": "existing clamp-based scale",
+  "preserve": ["font stack", "palette", "section order", "navigation", "footer"]
+}

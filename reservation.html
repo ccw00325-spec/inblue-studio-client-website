@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>일일 체험 예약 | PT &amp; Pilates in BLUE</title>
+<meta name="description" content="IN BLUE 장안점 · 성내점 일일 체험 및 상담 예약. 이름과 연락처만 남기면 담당 강사가 직접 연락드립니다.">
+<link rel="icon" href="assets/img/logo-mark.jpg">
+<link rel="stylesheet" href="assets/css/common.css">
+<style>
+/* ===== Studio block ===== */
+.studio{ padding-block:clamp(56px,7vw,110px); border-bottom:1px solid var(--line); }
+.studio__head{ display:grid; grid-template-columns:1fr auto; gap:26px; align-items:end; margin-bottom:clamp(28px,3.4vw,50px); }
+.studio__no{ font-family:var(--ff-serif); font-size:12px; letter-spacing:.26em; color:var(--blue-soft); display:block; margin-bottom:14px; }
+.studio__en{ font-size:clamp(38px,6vw,86px); line-height:1; }
+.studio__ko{ font-size:clamp(16px,1.5vw,20px); font-weight:600; letter-spacing:-.035em; color:var(--navy-deep); margin-top:14px; }
+.studio__addr{ text-align:right; font-size:14px; color:var(--gray); line-height:1.9; letter-spacing:-.02em; }
+.studio__addr a{ color:var(--navy-deep); font-weight:600; border-bottom:1px solid var(--line-strong); }
+
+/* photo row */
+.shots{ display:grid; grid-template-columns:1.6fr 1fr 1fr; grid-template-rows:auto auto; gap:clamp(8px,1vw,14px); }
+.shots .fig:nth-child(1){ grid-row:span 2; aspect-ratio:auto; height:100%; min-height:300px; }
+.shots .fig:nth-child(2),.shots .fig:nth-child(3),.shots .fig:nth-child(4){ aspect-ratio:4/3; }
+.shots .fig:nth-child(4){ grid-column:2 / span 2; aspect-ratio:auto; min-height:170px; }
+
+/* bottom row : instructor + actions */
+.srow{ display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(22px,3vw,52px); margin-top:clamp(26px,3vw,44px); align-items:center; }
+.sprof{ display:flex; gap:clamp(16px,2vw,26px); align-items:center; background:var(--paper); border:1px solid var(--line); padding:clamp(16px,1.8vw,24px); }
+.sprof__img{ width:clamp(88px,10vw,132px); flex-shrink:0; aspect-ratio:1/1; overflow:hidden; background:var(--sand); border-radius:50%; }
+.sprof__img img{ width:100%; height:100%; object-fit:cover; object-position:22% 22%; }
+.sprof__en{ font-family:var(--ff-serif); font-size:11.5px; letter-spacing:.24em; color:var(--blue-soft); display:block; margin-bottom:6px; }
+.sprof__name{ font-size:clamp(19px,1.8vw,24px); font-weight:700; letter-spacing:-.04em; color:var(--navy-deep); }
+.sprof__name span{ font-size:12px; font-weight:600; color:var(--blue); margin-left:9px; letter-spacing:.02em; }
+.sprof__tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:11px; }
+.sprof__tags li{ font-size:11.5px; color:var(--ink-soft); background:var(--mist); border-radius:999px; padding:4px 10px; }
+.sacts{ display:flex; flex-direction:column; gap:10px; }
+.sacts .btn,.sacts .naver{ width:100%; }
+
+.naver{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px; height:58px; padding:0 24px; border-radius:999px;
+  background:#03C75A; color:#fff; font-size:14px; font-weight:600; transition:.4s var(--ease);
+}
+.naver:hover{ filter:brightness(.92); transform:translateY(-2px); }
+.naver i{ width:19px; height:19px; border-radius:4px; background:#fff; color:#03C75A; display:grid; place-items:center; font-size:11px; font-weight:800; font-style:normal; line-height:1; }
+
+/* ===== Steps ===== */
+.steps{ display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(12px,1.6vw,24px); }
+.step{ padding:clamp(22px,2.4vw,32px); background:#fff; border:1px solid var(--line); }
+.step__n{ font-family:var(--ff-serif); font-size:28px; color:var(--blue-soft); display:block; line-height:1; margin-bottom:20px; }
+.step__t{ font-size:16px; font-weight:700; letter-spacing:-.04em; color:var(--navy-deep); margin-bottom:9px; }
+.step__d{ font-size:13.5px; color:var(--gray); line-height:1.9; }
+
+/* ===== Modal form ===== */
+.modal{
+  position:fixed; inset:0; z-index:400; display:flex; align-items:center; justify-content:center;
+  padding:clamp(12px,3vw,40px); opacity:0; visibility:hidden; transition:opacity .45s var(--ease), visibility .45s;
+}
+.modal.is-on{ opacity:1; visibility:visible; }
+.modal__bg{ position:absolute; inset:0; background:rgba(11,20,54,.62); backdrop-filter:blur(6px); }
+.modal__box{
+  position:relative; z-index:2; width:min(680px,100%); max-height:92vh; overflow-y:auto;
+  background:#fff; padding:clamp(26px,3.6vw,52px);
+  transform:translateY(26px) scale(.98); transition:transform .55s var(--ease);
+  box-shadow:0 40px 100px rgba(11,20,54,.35);
+}
+.modal.is-on .modal__box{ transform:none; }
+.modal__x{ position:absolute; top:18px; right:18px; width:40px; height:40px; border-radius:50%; display:grid; place-items:center; color:var(--gray); transition:.3s; }
+.modal__x:hover{ background:var(--mist); color:var(--navy); }
+.modal__title{ font-family:var(--ff-serif); font-size:clamp(28px,3.4vw,44px); color:var(--navy-deep); line-height:1.1; margin-bottom:8px; }
+.modal__sub{ font-size:13.5px; color:var(--gray); line-height:1.9; margin-bottom:clamp(24px,3vw,36px); }
+
+.fgrid{ display:grid; grid-template-columns:1fr 1fr; gap:18px 16px; }
+.f{ display:flex; flex-direction:column; gap:9px; }
+.f--full{ grid-column:1 / -1; }
+.f label{ font-size:12px; font-weight:600; letter-spacing:.04em; color:var(--navy-deep); }
+.f label em{ font-style:normal; color:#D14343; margin-left:3px; }
+.f input[type=text],.f input[type=tel],.f select,.f textarea{
+  height:52px; padding:0 15px; border:1px solid var(--line-strong); background:#fff;
+  font-size:14.5px; letter-spacing:-.02em; border-radius:2px; transition:border-color .3s, box-shadow .3s;
+  width:100%;
+}
+.f textarea{ height:auto; min-height:104px; padding:14px 15px; line-height:1.8; resize:vertical; }
+.f select{ appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 6 6.5l5-5' fill='none' stroke='%2316256B' stroke-width='1.3'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 16px center; padding-right:38px; cursor:pointer; }
+.f input:focus,.f select:focus,.f textarea:focus{ outline:none; border-color:var(--navy); box-shadow:0 0 0 3px rgba(22,37,107,.09); }
+.f__err{ font-size:11.5px; color:#D14343; display:none; }
+.f.is-err input,.f.is-err select{ border-color:#D14343; }
+.f.is-err .phone{ border-color:#D14343; }
+.f.is-err .f__err{ display:block; }
+
+/* phone */
+.phone{ display:flex; align-items:stretch; border:1px solid var(--line-strong); border-radius:2px; overflow:hidden; background:#fff; transition:border-color .3s, box-shadow .3s; }
+.phone:focus-within{ border-color:var(--navy); box-shadow:0 0 0 3px rgba(22,37,107,.09); }
+.phone__fix{
+  display:grid; place-items:center; width:74px; flex-shrink:0; background:var(--mist);
+  font-size:14.5px; font-weight:700; color:var(--navy); letter-spacing:.04em; border-right:1px solid var(--line-strong);
+}
+.phone input{ border:0 !important; box-shadow:none !important; flex:1; letter-spacing:.14em !important; }
+.phone input:focus{ outline:none; }
+
+/* branch radio */
+.brad{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.brad label{
+  position:relative; display:flex; flex-direction:column; gap:3px; padding:16px 18px;
+  border:1px solid var(--line-strong); cursor:pointer; transition:.35s var(--ease); border-radius:2px;
+}
+.brad input{ position:absolute; opacity:0; pointer-events:none; }
+.brad b{ font-family:var(--ff-serif); font-size:19px; color:var(--navy-deep); letter-spacing:.05em; }
+.brad span{ font-size:12px; color:var(--gray); }
+.brad input:checked + b{ color:var(--blue); }
+.brad label:has(input:checked){ border-color:var(--navy); background:var(--mist); box-shadow:0 0 0 1px var(--navy) inset; }
+
+/* agree */
+.agree{ display:flex; gap:11px; align-items:flex-start; margin-top:6px; }
+.agree input{ width:18px; height:18px; margin-top:3px; accent-color:var(--navy); flex-shrink:0; cursor:pointer; }
+.agree p{ font-size:12.5px; color:var(--gray); line-height:1.8; }
+.agree p b{ color:var(--navy-deep); }
+.agree.is-err p{ color:#D14343; }
+
+.modal__submit{ margin-top:26px; }
+.modal__submit .btn{ width:100%; height:62px; font-size:15px; }
+
+/* done */
+.done{ display:none; text-align:center; padding:clamp(20px,3vw,40px) 0; }
+.modal.is-done .fwrap{ display:none; }
+.modal.is-done .done{ display:block; }
+.done__ico{ width:76px; height:76px; border-radius:50%; background:var(--mist); color:var(--navy); display:grid; place-items:center; margin:0 auto 26px; }
+.done__t{ font-family:var(--ff-serif); font-size:clamp(28px,3.2vw,40px); color:var(--navy-deep); margin-bottom:12px; }
+.done__d{ font-size:14px; color:var(--gray); line-height:2; margin-bottom:24px; }
+.done__id{ display:inline-block; font-size:12px; letter-spacing:.1em; color:var(--blue); background:var(--mist); padding:9px 18px; border-radius:999px; font-family:ui-monospace,Menlo,Consolas,monospace; }
+.done__acts{ display:flex; gap:10px; justify-content:center; margin-top:30px; flex-wrap:wrap; }
+
+/* sticky mobile cta */
+.mcta{ display:none; }
+@media (max-width:720px){
+  .mcta{
+    display:flex; position:fixed; left:0; right:0; bottom:0; z-index:150; gap:8px; padding:10px 14px;
+    background:rgba(255,255,255,.94); backdrop-filter:blur(14px); border-top:1px solid var(--line);
+  }
+  .mcta .btn{ flex:1; height:50px; }
+  body{ padding-bottom:70px; }
+}
+
+@media (max-width:1080px){
+  .studio__head{ grid-template-columns:1fr; }
+  .studio__addr{ text-align:left; }
+  .shots{ grid-template-columns:1fr 1fr; }
+  .shots .fig:nth-child(1){ grid-row:auto; min-height:0; aspect-ratio:4/3; }
+  .shots .fig:nth-child(4){ grid-column:auto; min-height:0; aspect-ratio:4/3; }
+  .srow{ grid-template-columns:1fr; }
+  .steps{ grid-template-columns:1fr 1fr; }
+}
+@media (max-width:600px){
+  .fgrid{ grid-template-columns:1fr; }
+  .steps{ grid-template-columns:1fr; }
+  .shots{ grid-template-columns:1fr; }
+  .sprof{ flex-direction:column; text-align:center; }
+  .sprof__tags{ justify-content:center; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="nav__inner">
+    <a class="nav__brand" href="index.html">
+      <img src="assets/img/logo-mark.jpg" alt="IN BLUE">
+      <span class="nav__brand-txt"><b>IN BLUE</b><small>PT &amp; PILATES</small></span>
+    </a>
+    <nav class="nav__menu">
+      <a class="nav__link" href="index.html"><span class="en">Introduction to IN BLUE</span><span class="ko">인블루 소개</span></a>
+      <a class="nav__link" href="branch.html"><span class="en">Branch Introduction</span><span class="ko">지점소개</span></a>
+      <a class="nav__link" href="instructor.html"><span class="en">Instructor Introduction</span><span class="ko">강사소개</span></a>
+      <a class="nav__link" href="before-after.html"><span class="en">Before &amp; After</span><span class="ko">비포애프터</span></a>
+      <a class="nav__link" href="reservation.html"><span class="en">Reservation</span><span class="ko">일일 체험 예약</span></a>
+    </nav>
+    <button class="nav__cta" data-open-form=""><i></i>상담 예약</button>
+    <button class="nav__burger" aria-label="메뉴"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="drawer">
+  <a class="drawer__link" href="index.html"><span class="en">Introduction</span><span class="ko">인블루 소개</span></a>
+  <a class="drawer__link" href="branch.html"><span class="en">Branch</span><span class="ko">지점소개</span></a>
+  <a class="drawer__link" href="instructor.html"><span class="en">Instructor</span><span class="ko">강사소개</span></a>
+  <a class="drawer__link" href="before-after.html"><span class="en">Before &amp; After</span><span class="ko">비포애프터</span></a>
+  <a class="drawer__link" href="reservation.html"><span class="en">Reservation</span><span class="ko">일일 체험 예약</span></a>
+  <div class="drawer__foot"><button class="btn btn--fill" data-open-form=""><span>일일 체험 예약하기</span></button></div>
+</div>
+
+<main>
+
+<!-- ============ PAGE HERO ============ -->
+<section class="phero">
+  <img class="phero__bg" src="assets/img/logo-mark.jpg" alt="">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal="fade">Reservation · 일일 체험 예약</p>
+    <h1 class="display d-xl" data-reveal="line">
+      <span class="ln"><span>CHOOSE</span></span>
+      <span class="ln"><span>YOUR <em class="d-it">STUDIO</em></span></span>
+    </h1>
+    <p class="body-ko" data-reveal style="--d:180ms;max-width:540px">
+      가까운 지점을 고르고 상담을 남겨주세요.<br>
+      담당 강사가 직접 확인하고 연락드립니다.
+    </p>
+    <div style="margin-top:34px;display:flex;gap:12px;flex-wrap:wrap;--d:260ms" data-reveal>
+      <button class="btn btn--fill" data-open-form="">
+        <span>상담 예약하기</span>
+        <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+      <a class="btn btn--line" href="#studios"><span>지점 비교하기</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STUDIOS ============ -->
+<div id="studios">
+
+<!-- ---------- 장안점 ---------- -->
+<section class="studio">
+  <div class="wrap">
+    <div class="studio__head">
+      <div>
+        <span class="studio__no">STUDIO 01</span>
+        <h2 class="display studio__en" data-reveal="line"><span class="ln"><span>JANGAN</span></span></h2>
+        <p class="studio__ko" data-reveal style="--d:110ms">인 블루 장안점</p>
+      </div>
+      <p class="studio__addr" data-reveal="fade" style="--d:180ms">
+        서울 동대문구 한천로46길 64, 2층<br>
+        <a href="tel:01058902008">010.5890.2008</a>
+      </p>
+    </div>
+
+    <div class="shots">
+      <div class="fig" data-lb="assets/img/jangan-06-pilates.jpg" data-cap="장안점 — 필라테스존"><img src="assets/img/jangan-06-pilates.jpg" alt="장안점 필라테스존"></div>
+      <div class="fig" data-lb="assets/img/jangan-01-weight.jpg" data-cap="장안점 — 웨이트존"><img src="assets/img/jangan-01-weight.jpg" alt="장안점 웨이트존"></div>
+      <div class="fig" data-lb="assets/img/jangan-04-lounge.jpg" data-cap="장안점 — 라운지"><img src="assets/img/jangan-04-lounge.jpg" alt="장안점 라운지"></div>
+      <div class="fig" data-lb="assets/img/jangan-02-cardio.jpg" data-cap="장안점 — 유산소 &amp; 컨디셔닝"><img src="assets/img/jangan-02-cardio.jpg" alt="장안점 유산소존"></div>
+    </div>
+
+    <div class="srow">
+      <div class="sprof" data-reveal>
+        <div class="sprof__img"><img src="assets/img/instructor-lim.jpg" alt="임도영 대표"></div>
+        <div>
+          <span class="sprof__en">LIM DO YOUNG</span>
+          <p class="sprof__name">임도영 <span>대표 · 장안점</span></p>
+          <ul class="sprof__tags">
+            <li>ACSM C.P.T</li><li>국제 재활필라테스 Full Course</li>
+            <li>스포츠 재활처방사 1급</li><li>운동처방전문가 1급</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sacts" data-reveal style="--d:120ms">
+        <a class="naver" href="https://map.naver.com/p/search/inblue%20%ED%95%84%EB%9D%BC%ED%85%8C%EC%8A%A4/place/1497065545?c=15.00,0,0,0,dh&placePath=%2Fhome%3Fbk_query%3Dinblue%20%ED%95%84%EB%9D%BC%ED%85%8C%EC%8A%A4%26entry%3Dpll%26from%3Dmap%26fromPanelNum%3D2%26timestamp%3D202609220046%26locale%3Dko%26svcName%3Dmap_pcv5%26searchText%3Dinblue%20%ED%95%84%EB%9D%BC%ED%85%8C%EC%8A%A4" target="_blank" rel="noopener">
+          <i>N</i> 장안점 자세히 보기
+        </a>
+        <button class="btn btn--fill" data-open-form="jangan">
+          <span>장안점 상담 예약하기</span>
+          <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ---------- 성내점 ---------- -->
+<section class="studio">
+  <div class="wrap">
+    <div class="studio__head">
+      <div>
+        <span class="studio__no">STUDIO 02</span>
+        <h2 class="display studio__en" data-reveal="line"><span class="ln"><span>SEONGNAE</span></span></h2>
+        <p class="studio__ko" data-reveal style="--d:110ms">인 블루 성내점</p>
+      </div>
+      <p class="studio__addr" data-reveal="fade" style="--d:180ms">
+        서울 강동구 양재대로85길 20, 3층<br>
+        <a href="tel:01067172008">010.6717.2008</a>
+      </p>
+    </div>
+
+    <div class="shots">
+      <div class="fig" data-lb="assets/img/seongnae-04-studio.jpg" data-cap="성내점 — 메인 스튜디오"><img src="assets/img/seongnae-04-studio.jpg" alt="성내점 메인 스튜디오"></div>
+      <div class="fig" data-lb="assets/img/seongnae-05-rack.jpg" data-cap="성내점 — 웨이트존"><img src="assets/img/seongnae-05-rack.jpg" alt="성내점 웨이트존"></div>
+      <div class="fig" data-lb="assets/img/seongnae-06-info.jpg" data-cap="성내점 — 인포메이션"><img src="assets/img/seongnae-06-info.jpg" alt="성내점 인포메이션"></div>
+      <div class="fig" data-lb="assets/img/seongnae-02-pilates.jpg" data-cap="성내점 — 필라테스존"><img src="assets/img/seongnae-02-pilates.jpg" alt="성내점 필라테스존"></div>
+    </div>
+
+    <div class="srow">
+      <div class="sprof" data-reveal>
+        <div class="sprof__img"><img src="assets/img/instructor-shin.jpg" alt="신승현 대표"></div>
+        <div>
+          <span class="sprof__en">SHIN SEUNG HYUN</span>
+          <p class="sprof__name">신승현 <span>대표 · 성내점</span></p>
+          <ul class="sprof__tags">
+            <li>KEPA 필라테스 Full Course</li><li>산전산후 전문가</li>
+            <li>선수 트레이너(AT)</li><li>건강운동재활 석사과정</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sacts" data-reveal style="--d:120ms">
+        <a class="naver" href="https://map.naver.com/p/search/inblue%20%ED%95%84%EB%9D%BC%ED%85%8C%EC%8A%A4/place/2077195273?c=15.00,0,0,0,dh&placePath=%2Fhome%3Fbk_query%3Dinblue%20%ED%95%84%EB%9D%BC%ED%85%8C%EC%8A%A4%26entry%3Dpll%26from%3Dmap%26fromPanelNum%3D2%26timestamp%3D202609220047%26locale%3Dko%26svcName%3Dmap_pcv5%26searchText%3Dinblue%20%ED%95%84%EB%9D%BC%ED%85%8C%EC%8A%A4" target="_blank" rel="noopener">
+          <i>N</i> 성내점 자세히 보기
+        </a>
+        <button class="btn btn--fill" data-open-form="seongnae">
+          <span>성내점 상담 예약하기</span>
+          <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ============ STEPS ============ -->
+<section class="sec sec--mist">
+  <div class="wrap">
+    <div class="sec__head" style="max-width:620px">
+      <p class="eyebrow" data-reveal="fade">How it works</p>
+      <h2 class="display d-md" data-reveal="line"><span class="ln"><span>예약부터 첫 수업까지</span></span></h2>
+    </div>
+    <div class="steps">
+      <article class="step" data-reveal><span class="step__n">01</span><h4 class="step__t">예약 남기기</h4><p class="step__d">이름과 연락처, 나이만 적으시면 됩니다. 1분이면 끝납니다.</p></article>
+      <article class="step" data-reveal style="--d:90ms"><span class="step__n">02</span><h4 class="step__t">담당 강사 연락</h4><p class="step__d">해당 지점 대표가 직접 전화드려 일정과 목표를 맞춥니다.</p></article>
+      <article class="step" data-reveal style="--d:180ms"><span class="step__n">03</span><h4 class="step__t">체형 분석 &amp; 상담</h4><p class="step__d">방문 당일 정면·측면 사진을 찍고 가동범위를 확인합니다.</p></article>
+      <article class="step" data-reveal style="--d:270ms"><span class="step__n">04</span><h4 class="step__t">일일 체험 수업</h4><p class="step__d">분석 결과에 맞춰 한 타임을 그대로 경험하실 수 있습니다.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="sec sec--navy" style="text-align:center">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--center" style="justify-content:center" data-reveal="fade">Trial Class</p>
+    <h2 class="display d-lg" data-reveal="line" style="margin:18px 0 20px"><span class="ln"><span>지금 <em class="d-it">시작하세요</em></span></span></h2>
+    <p class="body-ko" data-reveal style="--d:140ms">문의는 영업시간 내 순차적으로 확인 후 연락드립니다.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:34px" data-reveal>
+      <button class="btn btn--fill" data-open-form="" style="background:#fff;color:var(--navy)"><span>상담 예약하기</span></button>
+      <a class="btn btn--ghost" href="tel:01058902008"><span>전화로 문의하기</span></a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ MOBILE STICKY ============ -->
+<div class="mcta">
+  <a class="btn btn--line" href="tel:01058902008"><span>전화 문의</span></a>
+  <button class="btn btn--fill" data-open-form=""><span>상담 예약하기</span></button>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__top">
+      <div>
+        <p class="foot__logo">IN BLUE</p>
+        <p class="foot__desc">PT와 필라테스를 함께하는 체형교정 · 재활 전문 스튜디오.<br>서울 장안 · 성내에서 소수 정예로 운영합니다.</p>
+      </div>
+      <div>
+        <h5>Branch</h5>
+        <ul>
+          <li>장안점 · 동대문구 한천로46길 64, 2층</li>
+          <li><a href="tel:01058902008">010.5890.2008</a></li>
+          <li style="height:12px"></li>
+          <li>성내점 · 강동구 양재대로85길 20, 3층</li>
+          <li><a href="tel:01067172008">010.6717.2008</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Menu</h5>
+        <ul>
+          <li><a href="index.html">인블루 소개</a></li>
+          <li><a href="branch.html">지점소개</a></li>
+          <li><a href="instructor.html">강사소개</a></li>
+          <li><a href="before-after.html">비포애프터</a></li>
+          <li><a href="reservation.html">일일 체험 예약</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bot">
+      <span>© 2026 PT &amp; Pilates in BLUE. All rights reserved.</span>
+      <span>STUDIO SEOUL — Rehabilitation · Corrective Exercise · Wellness</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ MODAL : 상담 예약 폼 ============ -->
+<div class="modal" id="resvModal" role="dialog" aria-modal="true" aria-labelledby="resvTitle">
+  <div class="modal__bg" data-close-form></div>
+  <div class="modal__box">
+    <button class="modal__x" data-close-form aria-label="닫기">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+
+    <div class="fwrap">
+      <h2 class="modal__title" id="resvTitle">상담 예약하기</h2>
+      <p class="modal__sub">아래 정보를 남겨주시면 해당 지점 담당 강사가 직접 연락드립니다.</p>
+
+      <form id="resvForm" novalidate>
+        <div class="fgrid">
+          <div class="f f--full">
+            <label>지점 선택 <em>*</em></label>
+            <div class="brad">
+              <label>
+                <input type="radio" name="branch" value="장안점" checked>
+                <b>JANGAN</b><span>장안점 · 동대문구</span>
+              </label>
+              <label>
+                <input type="radio" name="branch" value="성내점">
+                <b>SEONGNAE</b><span>성내점 · 강동구</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="f">
+            <label for="fName">이름 <em>*</em></label>
+            <input type="text" id="fName" name="name" placeholder="성함을 입력해 주세요" autocomplete="name" maxlength="20">
+            <span class="f__err">이름을 입력해 주세요.</span>
+          </div>
+
+          <div class="f">
+            <label for="fAge">나이 <em>*</em></label>
+            <select id="fAge" name="age">
+              <option value="">나이를 선택해 주세요</option>
+            </select>
+            <span class="f__err">나이를 선택해 주세요.</span>
+          </div>
+
+          <div class="f f--full">
+            <label for="fPhone">전화번호 <em>*</em></label>
+            <div class="phone">
+              <span class="phone__fix">010</span>
+              <input type="tel" id="fPhone" name="phone" inputmode="numeric" maxlength="8" placeholder="뒤 8자리를 입력해 주세요">
+            </div>
+            <span class="f__err">전화번호 뒤 8자리를 숫자로 입력해 주세요.</span>
+          </div>
+
+          <div class="f">
+            <label for="fInterest">관심 프로그램</label>
+            <select id="fInterest" name="interest">
+              <option value="">선택 안 함</option>
+              <option>체형교정 · 재활</option>
+              <option>다이어트 · 바디라인</option>
+              <option>척추 · 컨디셔닝</option>
+              <option>산전 · 산후</option>
+              <option>성장기 · 시니어</option>
+              <option>퍼스널 트레이닝(PT)</option>
+              <option>필라테스</option>
+            </select>
+          </div>
+
+          <div class="f">
+            <label for="fTime">통화 가능 시간</label>
+            <select id="fTime" name="time">
+              <option value="">아무 때나 괜찮아요</option>
+              <option>오전 (09:00 – 12:00)</option>
+              <option>오후 (12:00 – 17:00)</option>
+              <option>저녁 (17:00 – 21:00)</option>
+            </select>
+          </div>
+
+          <div class="f f--full">
+            <label for="fMemo">문의 내용</label>
+            <textarea id="fMemo" name="memo" placeholder="불편한 부위나 운동 경험, 궁금한 점을 적어주시면 상담에 참고하겠습니다."></textarea>
+          </div>
+        </div>
+
+        <label class="agree" id="agreeBox">
+          <input type="checkbox" id="fAgree">
+          <p><b>개인정보 수집 및 이용에 동의합니다.</b> 수집 항목은 이름 · 연락처 · 나이이며, 상담 회신 목적으로만 사용하고 상담 종료 후 파기합니다.</p>
+        </label>
+
+        <div class="modal__submit">
+          <button type="submit" class="btn btn--fill">
+            <span>예약 문의 보내기</span>
+            <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="done">
+      <div class="done__ico">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <h3 class="done__t">접수되었습니다</h3>
+      <p class="done__d">
+        담당 강사가 확인 후 남겨주신 번호로 연락드립니다.<br>
+        영업시간 외 접수는 다음 영업일에 연락드릴 수 있습니다.
+      </p>
+      <p class="done__id" id="doneId"></p>
+      <div class="done__acts">
+        <button class="btn btn--line btn--sm" data-close-form><span>확인</span></button>
+        <a class="btn btn--line btn--sm" href="branch.html"><span>지점 둘러보기</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/common.js"></script>
+<script>
+(function () {
+  var modal = document.getElementById('resvModal');
+  var form  = document.getElementById('resvForm');
+  var ageSel = document.getElementById('fAge');
+
+  /* 나이 옵션 : 숫자만 (14 ~ 80) */
+  for (var a = 14; a <= 80; a++) {
+    var o = document.createElement('option');
+    o.value = a; o.textContent = a;
+    ageSel.appendChild(o);
+  }
+
+  /* 열기 / 닫기 */
+  function open(branch) {
+    if (branch) {
+      var r = form.querySelector('input[name="branch"][value="' + (branch === 'jangan' ? '장안점' : '성내점') + '"]');
+      if (r) r.checked = true;
+    }
+    modal.classList.remove('is-done');
+    modal.classList.add('is-on');
+    document.body.style.overflow = 'hidden';
+    setTimeout(function () { document.getElementById('fName').focus(); }, 380);
+  }
+  function close() {
+    modal.classList.remove('is-on');
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('[data-open-form]').forEach(function (b) {
+    b.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.body.classList.remove('menu-open');
+      open(b.getAttribute('data-open-form'));
+    });
+  });
+  document.querySelectorAll('[data-close-form]').forEach(function (b) {
+    b.addEventListener('click', close);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('is-on')) close();
+  });
+  if (location.hash === '#form') open('');
+
+  /* 전화번호 : 숫자만 */
+  var phone = document.getElementById('fPhone');
+  phone.addEventListener('input', function () {
+    phone.value = phone.value.replace(/\D/g, '').slice(0, 8);
+  });
+
+  /* 검증 + 제출 */
+  function setErr(el, on) { el.closest('.f').classList.toggle('is-err', on); }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = document.getElementById('fName');
+    var age = ageSel;
+    var agree = document.getElementById('fAgree');
+    var ok = true;
+
+    if (!name.value.trim()) { setErr(name, true); ok = false; } else setErr(name, false);
+    if (phone.value.length !== 8) { setErr(phone, true); ok = false; } else setErr(phone, false);
+    if (!age.value) { setErr(age, true); ok = false; } else setErr(age, false);
+
+    var box = document.getElementById('agreeBox');
+    box.classList.toggle('is-err', !agree.checked);
+    if (!agree.checked) ok = false;
+
+    if (!ok) {
+      var first = form.querySelector('.is-err');
+      if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    var row = INBLUE.store.add({
+      name: name.value.trim(),
+      phoneTail: phone.value,
+      phone: '010-' + phone.value.slice(0, 4) + '-' + phone.value.slice(4),
+      age: Number(age.value),
+      branch: form.querySelector('input[name="branch"]:checked').value,
+      interest: document.getElementById('fInterest').value || '',
+      time: document.getElementById('fTime').value || '아무 때나',
+      memo: document.getElementById('fMemo').value.trim()
+    });
+
+    document.getElementById('doneId').textContent = '접수번호 ' + row.id;
+    modal.classList.add('is-done');
+    modal.querySelector('.modal__box').scrollTop = 0;
+    form.reset();
+    ageSel.value = '';
+  });
+})();
+</script>
+</body>
+</html>

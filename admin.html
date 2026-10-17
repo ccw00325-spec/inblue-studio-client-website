@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ADMIN | IN BLUE 상담 문의 관리</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="assets/img/logo-mark.jpg">
+<link rel="stylesheet" href="assets/css/common.css">
+<style>
+body{ background:var(--paper); }
+
+/* ===== Admin header ===== */
+.ahead{
+  position:sticky; top:0; z-index:200; background:rgba(255,255,255,.92);
+  backdrop-filter:blur(18px); border-bottom:1px solid var(--line);
+}
+.ahead__in{ max-width:1400px; margin:0 auto; padding:0 clamp(16px,3vw,40px); height:76px; display:flex; align-items:center; gap:18px; }
+.ahead__brand{ display:flex; align-items:center; gap:11px; }
+.ahead__brand img{ height:36px; mix-blend-mode:multiply; }
+.ahead__brand b{ font-family:var(--ff-serif); font-size:19px; letter-spacing:.09em; color:var(--navy); display:block; line-height:1.1; }
+.ahead__brand small{ font-size:9.5px; letter-spacing:.2em; color:var(--gray-light); }
+.ahead__tag{
+  font-size:10.5px; letter-spacing:.18em; font-weight:700; color:#fff; background:var(--navy);
+  padding:5px 10px; border-radius:3px; margin-left:4px;
+}
+.ahead__right{ margin-left:auto; display:flex; align-items:center; gap:12px; }
+.ahead__clock{ font-size:12.5px; color:var(--gray); letter-spacing:.02em; }
+.ahead__link{ font-size:12.5px; color:var(--gray); border-bottom:1px solid var(--line-strong); padding-bottom:1px; }
+.ahead__link:hover{ color:var(--navy); border-color:var(--navy); }
+
+/* ===== Bell ===== */
+.bell{ position:relative; width:46px; height:46px; border-radius:50%; border:1px solid var(--line-strong); display:grid; place-items:center; color:var(--navy-deep); background:#fff; transition:.35s var(--ease); }
+.bell:hover{ background:var(--mist); }
+.bell.is-ring{ animation:ring 1s var(--ease) 2; }
+@keyframes ring{
+  0%,100%{ transform:rotate(0) } 20%{ transform:rotate(14deg) } 40%{ transform:rotate(-12deg) }
+  60%{ transform:rotate(9deg) } 80%{ transform:rotate(-6deg) }
+}
+.bell__badge{
+  position:absolute; top:-5px; right:-5px; min-width:23px; height:23px; padding:0 6px;
+  border-radius:999px; background:#E0383B; color:#fff; font-size:11px; font-weight:700;
+  display:grid; place-items:center; border:2px solid var(--paper); letter-spacing:0;
+  transform:scale(0); transition:transform .4s var(--ease);
+}
+.bell__badge.is-on{ transform:scale(1); }
+
+.drop{
+  position:absolute; top:60px; right:0; width:min(380px,calc(100vw - 32px)); background:#fff;
+  border:1px solid var(--line); box-shadow:0 30px 70px rgba(11,20,54,.18); z-index:210;
+  opacity:0; visibility:hidden; transform:translateY(-8px); transition:.35s var(--ease);
+  max-height:70vh; overflow-y:auto;
+}
+.drop.is-on{ opacity:1; visibility:visible; transform:none; }
+.drop__h{ padding:18px 20px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:#fff; }
+.drop__h b{ font-size:14px; color:var(--navy-deep); letter-spacing:-.02em; }
+.drop__h button{ font-size:11.5px; color:var(--blue); }
+.drop__i{ display:flex; gap:12px; padding:15px 20px; border-bottom:1px solid var(--line); cursor:pointer; transition:background .25s; align-items:flex-start; }
+.drop__i:hover{ background:var(--mist); }
+.drop__i.is-new{ background:rgba(46,74,158,.045); }
+.drop__dot{ width:7px; height:7px; border-radius:50%; background:var(--line-strong); margin-top:7px; flex-shrink:0; }
+.drop__i.is-new .drop__dot{ background:#E0383B; }
+.drop__i b{ font-size:13.5px; color:var(--navy-deep); letter-spacing:-.02em; }
+.drop__i span{ display:block; font-size:12px; color:var(--gray); margin-top:3px; }
+.drop__i time{ margin-left:auto; font-size:11px; color:var(--gray-light); flex-shrink:0; }
+.drop__empty{ padding:44px 20px; text-align:center; font-size:13px; color:var(--gray-light); }
+
+/* ===== Layout ===== */
+.amain{ max-width:1400px; margin:0 auto; padding:clamp(24px,3vw,44px) clamp(16px,3vw,40px) 80px; }
+.atitle{ display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:clamp(20px,2.4vw,32px); }
+.atitle h1{ font-family:var(--ff-serif); font-size:clamp(30px,3.6vw,46px); color:var(--navy-deep); line-height:1.1; }
+.atitle p{ font-size:13px; color:var(--gray); margin-top:6px; }
+
+/* stats */
+.stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(10px,1.2vw,18px); margin-bottom:clamp(20px,2.4vw,32px); }
+.stat{ background:#fff; border:1px solid var(--line); padding:clamp(18px,2vw,26px); position:relative; overflow:hidden; }
+.stat::after{ content:""; position:absolute; left:0; top:0; width:3px; height:100%; background:var(--line-strong); }
+.stat.is-hl::after{ background:var(--navy); }
+.stat.is-warn::after{ background:#E0383B; }
+.stat__k{ font-size:11px; letter-spacing:.14em; color:var(--gray); font-weight:600; margin-bottom:12px; }
+.stat__v{ font-size:clamp(28px,3vw,42px); font-weight:700; color:var(--navy-deep); letter-spacing:-.04em; line-height:1; }
+.stat__v small{ font-size:14px; font-weight:500; color:var(--gray-light); margin-left:5px; }
+
+/* toolbar */
+.tools{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:16px; }
+.chips{ display:flex; gap:6px; }
+.chip{
+  height:38px; padding:0 16px; border:1px solid var(--line-strong); border-radius:999px; background:#fff;
+  font-size:12.5px; color:var(--gray); transition:.3s var(--ease); display:inline-flex; align-items:center; gap:7px;
+}
+.chip:hover{ border-color:var(--navy); color:var(--navy); }
+.chip.is-on{ background:var(--navy); border-color:var(--navy); color:#fff; }
+.chip em{ font-style:normal; opacity:.6; font-size:11px; }
+.search{ position:relative; margin-left:auto; }
+.search input{
+  height:38px; width:min(260px,44vw); padding:0 15px 0 38px; border:1px solid var(--line-strong);
+  background:#fff; font-size:13px; border-radius:999px;
+}
+.search input:focus{ outline:none; border-color:var(--navy); }
+.search svg{ position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--gray-light); }
+.tools .btn--sm{ height:38px; }
+
+/* table */
+.tablewrap{ background:#fff; border:1px solid var(--line); overflow-x:auto; }
+table{ width:100%; border-collapse:collapse; min-width:900px; }
+thead th{
+  text-align:left; font-size:11px; letter-spacing:.12em; color:var(--gray); font-weight:600;
+  padding:15px 16px; border-bottom:1px solid var(--line); background:var(--paper); white-space:nowrap;
+}
+tbody td{ padding:16px; border-bottom:1px solid var(--line); font-size:13.5px; color:var(--ink-soft); vertical-align:middle; }
+tbody tr{ transition:background .25s; cursor:pointer; }
+tbody tr:hover{ background:var(--mist); }
+tbody tr.is-new{ background:rgba(224,56,59,.035); }
+tbody tr.is-new:hover{ background:rgba(224,56,59,.07); }
+.td-name{ font-weight:700; color:var(--navy-deep); font-size:14.5px; letter-spacing:-.03em; }
+.td-name i{ display:inline-block; width:6px; height:6px; border-radius:50%; background:#E0383B; margin-right:7px; vertical-align:middle; }
+.td-tel{ font-family:ui-monospace,Menlo,Consolas,monospace; font-size:13.5px; color:var(--navy); letter-spacing:.02em; }
+.td-tel:hover{ text-decoration:underline; }
+.td-time{ font-size:12.5px; color:var(--gray); white-space:nowrap; }
+.pill{ display:inline-flex; align-items:center; height:25px; padding:0 11px; border-radius:999px; font-size:11.5px; font-weight:600; letter-spacing:.02em; white-space:nowrap; }
+.pill--j{ background:var(--mist); color:var(--navy); }
+.pill--s{ background:var(--sand-deep); color:#6B5B3E; }
+.pill--new{ background:#FDECEC; color:#C32E31; }
+.pill--done{ background:#E8F3EC; color:#2C7A4B; }
+.rowacts{ display:flex; gap:6px; justify-content:flex-end; }
+.iconbtn{
+  width:34px; height:34px; border-radius:50%; border:1px solid var(--line-strong); display:grid; place-items:center;
+  color:var(--gray); transition:.3s;
+}
+.iconbtn:hover{ border-color:var(--navy); color:var(--navy); background:var(--mist); }
+.iconbtn.is-del:hover{ border-color:#E0383B; color:#E0383B; background:#FDECEC; }
+
+.empty{ padding:clamp(60px,9vw,120px) 20px; text-align:center; }
+.empty img{ width:64px; margin:0 auto 20px; opacity:.3; mix-blend-mode:multiply; }
+.empty b{ display:block; font-size:16px; color:var(--navy-deep); margin-bottom:8px; letter-spacing:-.03em; }
+.empty p{ font-size:13px; color:var(--gray-light); line-height:1.9; }
+
+/* detail drawer */
+.det{
+  position:fixed; top:0; right:0; bottom:0; width:min(460px,100vw); background:#fff; z-index:250;
+  border-left:1px solid var(--line); box-shadow:-30px 0 70px rgba(11,20,54,.14);
+  transform:translateX(102%); transition:transform .55s var(--ease); overflow-y:auto;
+}
+.det.is-on{ transform:none; }
+.det__h{ padding:26px 28px; border-bottom:1px solid var(--line); display:flex; align-items:flex-start; justify-content:space-between; gap:16px; }
+.det__h h3{ font-size:26px; font-weight:700; color:var(--navy-deep); letter-spacing:-.045em; }
+.det__h p{ font-size:12px; color:var(--gray); margin-top:6px; font-family:ui-monospace,Menlo,Consolas,monospace; }
+.det__b{ padding:8px 28px 28px; }
+.det__row{ display:grid; grid-template-columns:96px 1fr; gap:14px; padding:15px 0; border-bottom:1px solid var(--line); align-items:baseline; }
+.det__k{ font-size:11px; letter-spacing:.14em; color:var(--blue); font-weight:600; }
+.det__v{ font-size:14.5px; color:var(--ink-soft); line-height:1.8; letter-spacing:-.02em; }
+.det__v a{ color:var(--navy); font-weight:600; border-bottom:1px solid var(--line-strong); }
+.det__memo{ white-space:pre-wrap; background:var(--paper); border:1px solid var(--line); padding:14px; font-size:13.5px; line-height:1.9; color:var(--ink-soft); }
+.det__acts{ display:grid; gap:9px; margin-top:26px; }
+.det__acts .btn{ width:100%; }
+
+.mask{ position:fixed; inset:0; background:rgba(11,20,54,.45); z-index:240; opacity:0; visibility:hidden; transition:.4s; }
+.mask.is-on{ opacity:1; visibility:visible; }
+
+/* toast */
+.toast{
+  position:fixed; left:50%; bottom:32px; transform:translate(-50%,120%); z-index:500;
+  background:var(--navy-deep); color:#fff; padding:15px 24px; border-radius:999px;
+  font-size:13.5px; letter-spacing:-.02em; box-shadow:0 20px 50px rgba(11,20,54,.34);
+  transition:transform .55s var(--ease); display:flex; align-items:center; gap:10px;
+}
+.toast.is-on{ transform:translate(-50%,0); }
+.toast i{ width:7px; height:7px; border-radius:50%; background:#8FE3C0; }
+
+.afoot{ margin-top:28px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-size:12px; color:var(--gray-light); }
+.afoot button{ font-size:12px; color:var(--gray); border-bottom:1px dotted var(--line-strong); }
+.afoot button:hover{ color:var(--navy); }
+
+@media (max-width:900px){
+  .stats{ grid-template-columns:1fr 1fr; }
+  .ahead__clock,.ahead__link{ display:none; }
+  .search{ margin-left:0; width:100%; }
+  .search input{ width:100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="ahead">
+  <div class="ahead__in">
+    <a class="ahead__brand" href="index.html">
+      <img src="assets/img/logo-mark.jpg" alt="IN BLUE">
+      <span><b>IN BLUE</b><small>PT &amp; PILATES</small></span>
+    </a>
+    <span class="ahead__tag">ADMIN</span>
+
+    <div class="ahead__right">
+      <span class="ahead__clock" id="clock"></span>
+      <a class="ahead__link" href="reservation.html" target="_blank">예약 페이지 열기</a>
+      <div style="position:relative">
+        <button class="bell" id="bell" aria-label="알림">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+          </svg>
+          <span class="bell__badge" id="badge">0</span>
+        </button>
+
+        <div class="drop" id="drop">
+          <div class="drop__h">
+            <b>오늘 접수된 문의</b>
+            <button id="markAll">모두 읽음</button>
+          </div>
+          <div id="dropList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MAIN ============ -->
+<main class="amain">
+  <div class="atitle">
+    <div>
+      <h1>상담 문의 관리</h1>
+      <p>예약 페이지에서 접수된 문의가 실시간으로 표시됩니다. 행을 누르면 상세 정보를 볼 수 있습니다.</p>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn--line btn--sm" id="csvBtn"><span>CSV 내려받기</span></button>
+    </div>
+  </div>
+
+  <!-- stats -->
+  <div class="stats">
+    <div class="stat is-hl"><p class="stat__k">오늘 문의</p><p class="stat__v"><span id="stToday">0</span><small>건</small></p></div>
+    <div class="stat is-warn"><p class="stat__k">미확인</p><p class="stat__v"><span id="stNew">0</span><small>건</small></p></div>
+    <div class="stat"><p class="stat__k">상담 완료</p><p class="stat__v"><span id="stDone">0</span><small>건</small></p></div>
+    <div class="stat"><p class="stat__k">전체 누적</p><p class="stat__v"><span id="stAll">0</span><small>건</small></p></div>
+  </div>
+
+  <!-- toolbar -->
+  <div class="tools">
+    <div class="chips" id="chips">
+      <button class="chip is-on" data-f="all">전체 <em id="cAll">0</em></button>
+      <button class="chip" data-f="new">신규 <em id="cNew">0</em></button>
+      <button class="chip" data-f="done">완료 <em id="cDone">0</em></button>
+      <button class="chip" data-f="jangan">장안점 <em id="cJ">0</em></button>
+      <button class="chip" data-f="seongnae">성내점 <em id="cS">0</em></button>
+    </div>
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="text" id="q" placeholder="이름 또는 전화번호 검색">
+    </div>
+  </div>
+
+  <!-- table -->
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:150px">접수 일시</th>
+          <th style="width:120px">이름</th>
+          <th style="width:150px">전화번호</th>
+          <th style="width:70px">나이</th>
+          <th style="width:100px">지점</th>
+          <th>관심 프로그램</th>
+          <th style="width:130px">통화 가능</th>
+          <th style="width:90px">상태</th>
+          <th style="width:100px"></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="empty" id="empty" style="display:none">
+      <img src="assets/img/logo-mark.jpg" alt="">
+      <b>아직 접수된 문의가 없습니다</b>
+      <p>예약 페이지에서 상담 문의가 접수되면 이 화면에 바로 나타납니다.</p>
+    </div>
+  </div>
+
+  <div class="afoot">
+    <span>데이터는 이 브라우저에 저장됩니다.</span>
+    <button id="seedBtn">테스트 문의 1건 넣기</button>
+    <button id="clearBtn">전체 삭제</button>
+  </div>
+</main>
+
+<!-- detail -->
+<div class="mask" id="mask"></div>
+<aside class="det" id="det">
+  <div class="det__h">
+    <div>
+      <h3 id="dName">—</h3>
+      <p id="dId">—</p>
+    </div>
+    <button class="iconbtn" id="dClose" aria-label="닫기">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="det__b">
+    <div class="det__row"><span class="det__k">접수 일시</span><span class="det__v" id="dTime">—</span></div>
+    <div class="det__row"><span class="det__k">전화번호</span><span class="det__v"><a id="dTel" href="#">—</a></span></div>
+    <div class="det__row"><span class="det__k">나이</span><span class="det__v" id="dAge">—</span></div>
+    <div class="det__row"><span class="det__k">지점</span><span class="det__v" id="dBranch">—</span></div>
+    <div class="det__row"><span class="det__k">관심</span><span class="det__v" id="dInterest">—</span></div>
+    <div class="det__row"><span class="det__k">통화 가능</span><span class="det__v" id="dCall">—</span></div>
+    <div class="det__row" style="grid-template-columns:1fr;gap:10px">
+      <span class="det__k">문의 내용</span>
+      <div class="det__memo" id="dMemo">—</div>
+    </div>
+    <div class="det__acts">
+      <a class="btn btn--fill" id="dCallBtn" href="#"><span>전화 걸기</span></a>
+      <button class="btn btn--line" id="dToggle"><span>상담 완료로 표시</span></button>
+      <button class="btn btn--line" id="dDel" style="color:#C32E31;border-color:#F0C9CA"><span>문의 삭제</span></button>
+    </div>
+  </div>
+</aside>
+
+<div class="toast" id="toast"><i></i><span id="toastMsg"></span></div>
+
+<script src="assets/js/common.js"></script>
+<script>
+(function () {
+  var S = INBLUE.store, U = INBLUE.util;
+  var filter = 'all', query = '', current = null, lastCount = -1;
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- clock ---------- */
+  function tick() {
+    var d = new Date(), p = function (n) { return String(n).padStart(2, '0'); };
+    var wd = ['일','월','화','수','목','금','토'][d.getDay()];
+    $('clock').textContent = d.getFullYear() + '. ' + p(d.getMonth()+1) + '. ' + p(d.getDate()) + ' (' + wd + ') ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+  tick(); setInterval(tick, 20000);
+
+  /* ---------- render ---------- */
+  function matches(r) {
+    if (filter === 'new' && r.status !== 'new') return false;
+    if (filter === 'done' && r.status !== 'done') return false;
+    if (filter === 'jangan' && r.branch !== '장안점') return false;
+    if (filter === 'seongnae' && r.branch !== '성내점') return false;
+    if (query) {
+      var q = query.replace(/\s/g, '').toLowerCase();
+      var hay = (r.name + r.phone + (r.phoneTail||'')).replace(/[\s-]/g, '').toLowerCase();
+      if (hay.indexOf(q) === -1) return false;
+    }
+    return true;
+  }
+
+  function render() {
+    var all = S.all();
+    var today = all.filter(function (r) { return U.isToday(r.createdAt); });
+    var news = all.filter(function (r) { return r.status === 'new'; });
+    var dones = all.filter(function (r) { return r.status === 'done'; });
+
+    /* stats */
+    $('stToday').textContent = today.length;
+    $('stNew').textContent = news.length;
+    $('stDone').textContent = dones.length;
+    $('stAll').textContent = all.length;
+
+    /* chips */
+    $('cAll').textContent = all.length;
+    $('cNew').textContent = news.length;
+    $('cDone').textContent = dones.length;
+    $('cJ').textContent = all.filter(function (r) { return r.branch === '장안점'; }).length;
+    $('cS').textContent = all.filter(function (r) { return r.branch === '성내점'; }).length;
+
+    /* bell badge : 오늘 접수 건수 (1~99, 초과 시 99+) */
+    var badge = $('badge');
+    badge.textContent = U.badge(today.length);
+    badge.classList.toggle('is-on', today.length > 0);
+
+    /* dropdown */
+    var dl = $('dropList');
+    if (!today.length) {
+      dl.innerHTML = '<div class="drop__empty">오늘 접수된 문의가 없습니다.</div>';
+    } else {
+      dl.innerHTML = today.map(function (r) {
+        return '<div class="drop__i ' + (r.read ? '' : 'is-new') + '" data-go="' + r.id + '">' +
+          '<span class="drop__dot"></span>' +
+          '<div><b>' + U.esc(r.name) + ' · ' + r.age + '세</b>' +
+          '<span>' + U.esc(r.branch) + ' · ' + U.esc(r.phone) + '</span></div>' +
+          '<time>' + U.dt(r.createdAt).slice(-5) + '</time></div>';
+      }).join('');
+    }
+
+    /* table */
+    var rows = all.filter(matches);
+    var tb = $('tbody');
+    $('empty').style.display = rows.length ? 'none' : 'block';
+    tb.innerHTML = rows.map(function (r) {
+      return '<tr class="' + (r.status === 'new' ? 'is-new' : '') + '" data-id="' + r.id + '">' +
+        '<td class="td-time">' + U.dt(r.createdAt) + '</td>' +
+        '<td class="td-name">' + (r.status === 'new' ? '<i></i>' : '') + U.esc(r.name) + '</td>' +
+        '<td><a class="td-tel" href="tel:' + r.phone.replace(/-/g,'') + '" onclick="event.stopPropagation()">' + U.esc(r.phone) + '</a></td>' +
+        '<td>' + r.age + '세</td>' +
+        '<td><span class="pill ' + (r.branch === '장안점' ? 'pill--j' : 'pill--s') + '">' + U.esc(r.branch) + '</span></td>' +
+        '<td>' + (U.esc(r.interest) || '<span style="color:var(--gray-light)">—</span>') + '</td>' +
+        '<td class="td-time">' + U.esc(r.time || '아무 때나') + '</td>' +
+        '<td><span class="pill ' + (r.status === 'new' ? 'pill--new' : 'pill--done') + '">' + (r.status === 'new' ? '신규' : '완료') + '</span></td>' +
+        '<td><div class="rowacts">' +
+          '<button class="iconbtn" data-act="toggle" data-id="' + r.id + '" title="상태 변경">' +
+            '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 6 9 17l-5-5"/></svg></button>' +
+          '<button class="iconbtn is-del" data-act="del" data-id="' + r.id + '" title="삭제">' +
+            '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg></button>' +
+        '</div></td></tr>';
+    }).join('');
+
+    /* new arrival feedback */
+    if (lastCount !== -1 && all.length > lastCount) {
+      $('bell').classList.add('is-ring');
+      setTimeout(function () { $('bell').classList.remove('is-ring'); }, 2100);
+      toast('새로운 상담 문의가 접수되었습니다');
+    }
+    lastCount = all.length;
+  }
+
+  /* ---------- toast ---------- */
+  var tt;
+  function toast(msg) {
+    $('toastMsg').textContent = msg;
+    $('toast').classList.add('is-on');
+    clearTimeout(tt);
+    tt = setTimeout(function () { $('toast').classList.remove('is-on'); }, 3200);
+  }
+
+  /* ---------- detail ---------- */
+  function openDetail(id) {
+    var r = S.all().filter(function (x) { return x.id === id; })[0];
+    if (!r) return;
+    current = r;
+    if (!r.read) { S.update(id, { read: true }); }
+
+    $('dName').textContent = r.name + ' (' + r.age + '세)';
+    $('dId').textContent = r.id;
+    $('dTime').textContent = U.dt(r.createdAt);
+    $('dTel').textContent = r.phone;
+    $('dTel').href = 'tel:' + r.phone.replace(/-/g, '');
+    $('dAge').textContent = r.age + '세';
+    $('dBranch').textContent = r.branch;
+    $('dInterest').textContent = r.interest || '선택 안 함';
+    $('dCall').textContent = r.time || '아무 때나';
+    $('dMemo').textContent = r.memo || '남긴 내용이 없습니다.';
+    $('dCallBtn').href = 'tel:' + r.phone.replace(/-/g, '');
+    $('dToggle').querySelector('span').textContent = r.status === 'new' ? '상담 완료로 표시' : '신규로 되돌리기';
+
+    $('det').classList.add('is-on');
+    $('mask').classList.add('is-on');
+    render();
+  }
+  function closeDetail() {
+    $('det').classList.remove('is-on');
+    $('mask').classList.remove('is-on');
+    current = null;
+  }
+
+  /* ---------- events ---------- */
+  $('bell').addEventListener('click', function (e) {
+    e.stopPropagation();
+    $('drop').classList.toggle('is-on');
+  });
+  document.addEventListener('click', function (e) {
+    if (!$('drop').contains(e.target)) $('drop').classList.remove('is-on');
+  });
+  $('drop').addEventListener('click', function (e) {
+    var it = e.target.closest('[data-go]');
+    if (!it) return;
+    $('drop').classList.remove('is-on');
+    openDetail(it.getAttribute('data-go'));
+  });
+  $('markAll').addEventListener('click', function (e) {
+    e.stopPropagation();
+    S.all().forEach(function (r) { if (!r.read) S.update(r.id, { read: true }); });
+    render();
+    toast('오늘 문의를 모두 읽음 처리했습니다');
+  });
+
+  $('tbody').addEventListener('click', function (e) {
+    var act = e.target.closest('[data-act]');
+    if (act) {
+      e.stopPropagation();
+      var id = act.getAttribute('data-id');
+      if (act.getAttribute('data-act') === 'toggle') {
+        var r = S.all().filter(function (x) { return x.id === id; })[0];
+        S.update(id, { status: r.status === 'new' ? 'done' : 'new', read: true });
+        toast(r.status === 'new' ? '상담 완료로 변경했습니다' : '신규로 되돌렸습니다');
+      } else {
+        if (!confirm('이 문의를 삭제할까요? 되돌릴 수 없습니다.')) return;
+        S.remove(id);
+        if (current && current.id === id) closeDetail();
+        toast('문의를 삭제했습니다');
+      }
+      render();
+      return;
+    }
+    var tr = e.target.closest('tr[data-id]');
+    if (tr) openDetail(tr.getAttribute('data-id'));
+  });
+
+  $('chips').addEventListener('click', function (e) {
+    var c = e.target.closest('.chip');
+    if (!c) return;
+    filter = c.getAttribute('data-f');
+    document.querySelectorAll('.chip').forEach(function (x) { x.classList.toggle('is-on', x === c); });
+    render();
+  });
+  $('q').addEventListener('input', function () { query = this.value.trim(); render(); });
+
+  $('dClose').addEventListener('click', closeDetail);
+  $('mask').addEventListener('click', closeDetail);
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDetail(); });
+
+  $('dToggle').addEventListener('click', function () {
+    if (!current) return;
+    var next = current.status === 'new' ? 'done' : 'new';
+    S.update(current.id, { status: next, read: true });
+    toast(next === 'done' ? '상담 완료로 변경했습니다' : '신규로 되돌렸습니다');
+    openDetail(current.id);
+  });
+  $('dDel').addEventListener('click', function () {
+    if (!current) return;
+    if (!confirm('이 문의를 삭제할까요? 되돌릴 수 없습니다.')) return;
+    S.remove(current.id);
+    closeDetail();
+    render();
+    toast('문의를 삭제했습니다');
+  });
+
+  /* CSV */
+  $('csvBtn').addEventListener('click', function () {
+    var rows = S.all();
+    if (!rows.length) { toast('내려받을 문의가 없습니다'); return; }
+    var head = ['접수번호','접수일시','이름','전화번호','나이','지점','관심프로그램','통화가능','문의내용','상태'];
+    var body = rows.map(function (r) {
+      return [r.id, U.dt(r.createdAt), r.name, r.phone, r.age, r.branch, r.interest || '', r.time || '', (r.memo || '').replace(/\n/g, ' '), r.status === 'new' ? '신규' : '완료'];
+    });
+    var csv = [head].concat(body).map(function (line) {
+      return line.map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(',');
+    }).join('\r\n');
+    var blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'inblue-inquiries-' + new Date().toISOString().slice(0, 10) + '.csv';
+    a.click();
+    toast('CSV 파일을 내려받았습니다');
+  });
+
+  /* dev helpers */
+  $('seedBtn').addEventListener('click', function () {
+    var names = ['김서연','박지훈','이하늘','정민아','최도현','한유진'];
+    var itv = ['체형교정 · 재활','다이어트 · 바디라인','척추 · 컨디셔닝','필라테스',''];
+    S.add({
+      name: names[Math.floor(Math.random()*names.length)],
+      phoneTail: String(Math.floor(10000000 + Math.random()*89999999)),
+      phone: '010-' + String(Math.floor(1000 + Math.random()*8999)) + '-' + String(Math.floor(1000 + Math.random()*8999)),
+      age: Math.floor(20 + Math.random()*40),
+      branch: Math.random() > .5 ? '장안점' : '성내점',
+      interest: itv[Math.floor(Math.random()*itv.length)],
+      time: '오후 (12:00 – 17:00)',
+      memo: '어깨가 자주 뭉쳐서 문의드립니다.'
+    });
+    render();
+  });
+  $('clearBtn').addEventListener('click', function () {
+    if (!confirm('모든 문의를 삭제할까요? 되돌릴 수 없습니다.')) return;
+    S.save([]);
+    closeDetail();
+    render();
+    toast('전체 삭제되었습니다');
+  });
+
+  /* live sync */
+  S.onChange(render);
+  setInterval(render, 5000);
+  render();
+})();
+</script>
+</body>
+</html>

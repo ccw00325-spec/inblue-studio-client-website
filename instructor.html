@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>강사소개 | PT &amp; Pilates in BLUE</title>
+<meta name="description" content="IN BLUE 장안점 임도영 대표, 성내점 신승현 대표. 재활·체형교정 전문 자격과 경력을 갖춘 1:1 담당 강사 소개.">
+<link rel="icon" href="assets/img/logo-mark.jpg">
+<link rel="stylesheet" href="assets/css/common.css">
+<style>
+/* ===== Name block ===== */
+.iname{ display:grid; grid-template-columns:1fr auto; gap:28px; align-items:end; padding-bottom:clamp(26px,3vw,44px); border-bottom:1px solid var(--line-strong); }
+.iname__en{ font-family:var(--ff-serif); font-size:clamp(13px,1.1vw,16px); letter-spacing:.3em; color:var(--blue-soft); display:block; margin-bottom:14px; }
+.iname__ko{ font-size:clamp(44px,7vw,104px); font-weight:700; letter-spacing:-.05em; line-height:1; color:var(--navy-deep); }
+.iname__ko span{ font-size:.3em; font-weight:600; letter-spacing:-.02em; color:var(--blue); vertical-align:middle; margin-left:16px; }
+.iname__meta{ text-align:right; }
+.iname__branch{ font-family:var(--ff-serif); font-size:clamp(20px,2.2vw,32px); color:var(--navy); letter-spacing:.06em; }
+.iname__branch small{ display:block; font-family:var(--ff-sans); font-size:12px; letter-spacing:.1em; color:var(--gray); margin-top:4px; }
+
+/* ===== Profile card figure ===== */
+.icard-fig{
+  position:relative; margin-top:clamp(30px,4vw,52px); background:var(--sand);
+  overflow:hidden; border:1px solid var(--line);
+}
+.icard-fig img{ width:100%; height:auto; transform:scale(1.06); transition:transform 1.5s var(--ease); }
+.icard-fig.is-in img{ transform:scale(1); }
+.icard-fig::after{ content:""; position:absolute; inset:0; background:var(--sand); transform-origin:right; transform:scaleX(1); transition:transform 1.2s var(--ease); }
+.icard-fig.is-in::after{ transform:scaleX(0); }
+.icard-fig__tag{
+  position:absolute; left:0; bottom:0; z-index:3; background:var(--navy); color:#fff;
+  font-size:11px; letter-spacing:.18em; padding:9px 16px;
+}
+
+/* ===== Credential columns ===== */
+.creds{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(24px,3.4vw,58px); margin-top:clamp(48px,6vw,90px); }
+.cred h4{
+  display:flex; align-items:center; gap:12px;
+  font-family:var(--ff-serif); font-size:clamp(20px,1.8vw,26px); color:var(--navy-deep);
+  padding-bottom:16px; border-bottom:1px solid var(--navy-deep); margin-bottom:8px;
+}
+.cred h4 em{ font-family:var(--ff-sans); font-style:normal; font-size:10px; letter-spacing:.2em; color:var(--blue); margin-left:auto; }
+.cred li{
+  display:flex; gap:12px; padding:13px 0; border-bottom:1px solid var(--line);
+  font-size:14px; line-height:1.75; color:var(--ink-soft); letter-spacing:-.02em;
+}
+.cred li::before{ content:""; width:4px; height:4px; border-radius:50%; background:var(--blue-soft); margin-top:9px; flex-shrink:0; }
+.cred li small{ display:block; color:var(--gray-light); font-size:12.5px; margin-top:3px; letter-spacing:0; }
+.cred li.is-now{ color:var(--navy-deep); font-weight:600; }
+.cred li.is-now::before{ background:var(--blue); width:5px; height:5px; }
+
+/* ===== Recommend ===== */
+.reco{ display:grid; grid-template-columns:.7fr 1.3fr; gap:clamp(24px,4vw,64px); align-items:start; }
+.reco__list{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(12px,1.6vw,22px); }
+.reco__i{ background:#fff; border:1px solid var(--line); padding:clamp(20px,2.2vw,30px); transition:.5s var(--ease); }
+.reco__i:hover{ border-color:var(--navy); transform:translateY(-5px); box-shadow:0 22px 52px rgba(11,20,54,.08); }
+.reco__i b{ display:block; font-size:15.5px; font-weight:700; letter-spacing:-.035em; color:var(--navy-deep); margin-bottom:9px; }
+.reco__i p{ font-size:13.5px; color:var(--gray); line-height:1.9; }
+
+/* ===== Quote ===== */
+.iquote{ position:relative; padding:clamp(52px,7vw,96px) 0; text-align:center; }
+.iquote q{
+  display:block; font-family:var(--ff-serif); font-style:italic; font-weight:300;
+  font-size:clamp(24px,3.6vw,52px); line-height:1.4; color:var(--navy-deep); quotes:none;
+}
+.iquote cite{ display:block; margin-top:26px; font-family:var(--ff-sans); font-style:normal; font-size:12px; letter-spacing:.22em; color:var(--blue); }
+
+/* ===== Team strip ===== */
+.team{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(14px,2vw,30px); }
+.team a{ position:relative; display:block; overflow:hidden; }
+.team a .fig{ aspect-ratio:16/10; background:var(--sand); }
+.team a .fig img{ object-position:center 20%; }
+.team__ov{
+  position:absolute; inset:auto 0 0 0; z-index:3; padding:22px; color:#fff;
+  background:linear-gradient(0deg, rgba(11,20,54,.85) 0%, rgba(11,20,54,0) 100%);
+}
+.team__ov b{ font-size:20px; letter-spacing:-.04em; }
+.team__ov span{ display:block; font-size:12px; opacity:.72; margin-top:2px; letter-spacing:.04em; }
+
+@media (max-width:1080px){
+  .creds{ grid-template-columns:1fr; }
+  .reco{ grid-template-columns:1fr; }
+  .iname{ grid-template-columns:1fr; align-items:start; }
+  .iname__meta{ text-align:left; }
+}
+@media (max-width:640px){
+  .reco__list{ grid-template-columns:1fr; }
+  .team{ grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="nav__inner">
+    <a class="nav__brand" href="index.html">
+      <img src="assets/img/logo-mark.jpg" alt="IN BLUE">
+      <span class="nav__brand-txt"><b>IN BLUE</b><small>PT &amp; PILATES</small></span>
+    </a>
+    <nav class="nav__menu">
+      <a class="nav__link" href="index.html"><span class="en">Introduction to IN BLUE</span><span class="ko">인블루 소개</span></a>
+      <a class="nav__link" href="branch.html"><span class="en">Branch Introduction</span><span class="ko">지점소개</span></a>
+      <a class="nav__link" href="instructor.html"><span class="en">Instructor Introduction</span><span class="ko">강사소개</span></a>
+      <a class="nav__link" href="before-after.html"><span class="en">Before &amp; After</span><span class="ko">비포애프터</span></a>
+      <a class="nav__link" href="reservation.html"><span class="en">Reservation</span><span class="ko">일일 체험 예약</span></a>
+    </nav>
+    <a class="nav__cta" href="reservation.html"><i></i>상담 예약</a>
+    <button class="nav__burger" aria-label="메뉴"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="drawer">
+  <a class="drawer__link" href="index.html"><span class="en">Introduction</span><span class="ko">인블루 소개</span></a>
+  <a class="drawer__link" href="branch.html"><span class="en">Branch</span><span class="ko">지점소개</span></a>
+  <a class="drawer__link" href="instructor.html"><span class="en">Instructor</span><span class="ko">강사소개</span></a>
+  <a class="drawer__link" href="before-after.html"><span class="en">Before &amp; After</span><span class="ko">비포애프터</span></a>
+  <a class="drawer__link" href="reservation.html"><span class="en">Reservation</span><span class="ko">일일 체험 예약</span></a>
+  <div class="drawer__foot"><a class="btn btn--fill" href="reservation.html"><span>일일 체험 예약하기</span></a></div>
+</div>
+
+<main>
+
+<!-- ============ PAGE HERO ============ -->
+<section class="phero">
+  <img class="phero__bg" src="assets/img/logo-mark.jpg" alt="">
+  <div class="wrap">
+    <p class="eyebrow" data-reveal="fade">Instructor Introduction · 강사소개</p>
+    <h1 class="display d-xl" data-reveal="line">
+      <span class="ln"><span>Who teaches</span></span>
+      <span class="ln"><span class="d-it">your 50 minutes</span></span>
+    </h1>
+    <p class="body-ko" data-reveal style="--d:180ms;max-width:540px">
+      수업의 질은 결국 사람에게서 갈립니다.<br>
+      두 지점 모두 대표가 직접 수업을 맡습니다.
+    </p>
+  </div>
+</section>
+
+<!-- ============ TABS ============ -->
+<div class="tabbar" data-tabs="inst">
+  <div class="wrap tabbar__inner">
+    <button class="tab is-on" data-tab="jangan"><span class="en">JANGAN</span><span class="ko">장안점</span></button>
+    <button class="tab" data-tab="seongnae"><span class="en">SEONGNAE</span><span class="ko">성내점</span></button>
+    <span class="tabbar__meta">지점을 선택하면 담당 강사가 표시됩니다</span>
+  </div>
+</div>
+
+<div data-panel-group="inst">
+
+<!-- =====================================================
+     PANEL : 장안점 — 임도영
+     ===================================================== -->
+<div class="panel is-on" data-panel="jangan">
+
+  <section class="sec" style="padding-bottom:clamp(50px,6vw,90px)">
+    <div class="wrap">
+      <div class="iname">
+        <div>
+          <span class="iname__en">LIM DO YOUNG</span>
+          <h2 class="iname__ko" data-reveal="line"><span class="ln"><span>임도영 <span>대표</span></span></span></h2>
+        </div>
+        <div class="iname__meta" data-reveal="fade">
+          <p class="iname__branch">JANGAN<small>인 블루 장안점</small></p>
+        </div>
+      </div>
+
+      <figure class="icard-fig" data-reveal="fade" data-lb="assets/img/instructor-lim.jpg" data-cap="임도영 대표 — PT &amp; 필라테스 인 블루">
+        <img src="assets/img/instructor-lim.jpg" alt="임도영 대표 프로필">
+        <figcaption class="icard-fig__tag">PROFILE · LIM DO YOUNG</figcaption>
+      </figure>
+
+      <div class="creds">
+        <div class="cred" data-reveal>
+          <h4>Certifications <em>자격</em></h4>
+          <ul>
+            <li>국제 재활필라테스협회 Full Course 수료<small>Mat · Reformer · Cadillac · Chair · Barrel</small></li>
+            <li>ACSM C.P.T 교육 수료<small>미국 스포츠 의학회 공인 퍼스널 트레이너</small></li>
+            <li>코치아카데미 자격증<small>대한 보디빌딩 협회</small></li>
+            <li>대한예방운동협회 헬스케어 관리 전문가 (척추)</li>
+            <li>대한예방운동협회 예방운동전문가</li>
+            <li>스포츠 재활처방사 1급</li>
+            <li>스포츠 컨디셔닝 지도사 1급</li>
+            <li>체형관리사 1급</li>
+            <li>운동처방전문가 1급</li>
+            <li>생활체육 지도자 2급 (보디빌딩)</li>
+          </ul>
+        </div>
+
+        <div class="cred" data-reveal style="--d:120ms">
+          <h4>Experience <em>경력</em></h4>
+          <ul>
+            <li>전) 서울휘트니스 입시 체육 강사</li>
+            <li>전) 스포애니 범계역점 트레이너</li>
+            <li>전) 스포애니 공릉동점 P.T 팀장</li>
+            <li>전) 스포애니 사가정역점 총괄팀장</li>
+            <li>전) 스포애니 사가정역점 지점장</li>
+            <li class="is-now">현) PT &amp; 필라테스 인 블루 대표</li>
+          </ul>
+        </div>
+
+        <div class="cred" data-reveal style="--d:240ms">
+          <h4>Field <em>전문 분야</em></h4>
+          <ul>
+            <li>근력 향상 · 바디라인 설계</li>
+            <li>체형 교정 및 척추 헬스케어</li>
+            <li>부상 이후 복귀를 위한 운동 처방</li>
+            <li>다이어트 · 체성분 개선</li>
+            <li>입시 · 체력 검정 대비 트레이닝</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--mist">
+    <div class="wrap reco">
+      <div>
+        <p class="eyebrow" data-reveal="fade">Recommend</p>
+        <h3 class="display d-md" data-reveal="line" style="margin-top:18px"><span class="ln"><span>이런 분께</span></span></h3>
+      </div>
+      <div class="reco__list">
+        <article class="reco__i" data-reveal><b>무게를 올리고 싶은 분</b><p>자세가 무너지지 않는 선까지 확인한 다음 강도를 올립니다. 순서가 반대면 결국 아픈 곳이 생깁니다.</p></article>
+        <article class="reco__i" data-reveal style="--d:90ms"><b>허리·어깨가 불편한 분</b><p>척추 헬스케어와 운동처방 과정을 거쳤습니다. 통증이 나오는 구간을 피해 대체 동작으로 돌려 씁니다.</p></article>
+        <article class="reco__i" data-reveal style="--d:180ms"><b>운동을 오래 쉬었던 분</b><p>맨몸 동작과 가벼운 기구부터 다시 시작합니다. 첫 달은 강도보다 습관을 만드는 데 씁니다.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec--sand">
+    <div class="wrap iquote">
+      <q data-reveal="fade">Form first, weight later.</q>
+      <cite data-reveal="fade" style="--d:150ms">LIM DO YOUNG · JANGAN</cite>
+    </div>
+  </section>
+</div>
+
+<!-- =====================================================
+     PANEL : 성내점 — 신승현
+     ===================================================== -->
+<div class="panel" data-panel="seongnae">
+
+  <section class="sec" style="padding-bottom:clamp(50px,6vw,90px)">
+    <div class="wrap">
+      <div class="iname">
+        <div>
+          <span class="iname__en">SHIN SEUNG HYUN</span>
+          <h2 class="iname__ko" data-reveal="line"><span class="ln"><span>신승현 <span>대표</span></span></span></h2>
+        </div>
+        <div class="iname__meta" data-reveal="fade">
+          <p class="iname__branch">SEONGNAE<small>인 블루 성내점</small></p>
+        </div>
+      </div>
+
+      <figure class="icard-fig" data-reveal="fade" data-lb="assets/img/instructor-shin.jpg" data-cap="신승현 대표 — PT &amp; 필라테스 In Blue">
+        <img src="assets/img/instructor-shin.jpg" alt="신승현 대표 프로필">
+        <figcaption class="icard-fig__tag">PROFILE · SHIN SEUNG HYUN</figcaption>
+      </figure>
+
+      <div class="creds">
+        <div class="cred" data-reveal>
+          <h4>Certifications <em>자격</em></h4>
+          <ul>
+            <li>International KEPA Pilates Full Course<small>Mat · Reformer · Cadillac · Chair · Barrel · Springboard</small></li>
+            <li>생활체육지도사 2급 (보디빌딩)</li>
+            <li>컨디셔닝 케어 전문가 (CPS)</li>
+            <li>선수 트레이너 (AT)</li>
+            <li>산전산후 전문가</li>
+            <li>힐링 테이핑 전문가</li>
+            <li>대한예방운동협회 척추 헬스케어 전문가</li>
+            <li>대한예방운동협회 예방운동 전문가</li>
+          </ul>
+        </div>
+
+        <div class="cred" data-reveal style="--d:120ms">
+          <h4>Experience <em>경력</em></h4>
+          <ul>
+            <li>전) 센터인필라테스 양원 그룹 필라테스 강사</li>
+            <li>전) 코어핏 PT &amp; 필라테스 상봉 강사</li>
+            <li>전) 스포애니 사가정역점 PT 팀장</li>
+            <li class="is-now">현) PT &amp; 필라테스 In Blue 대표</li>
+            <li class="is-now">현) 명지대학교 평생교육원 강사</li>
+          </ul>
+        </div>
+
+        <div class="cred" data-reveal style="--d:240ms">
+          <h4>Education <em>학력 · 전문 분야</em></h4>
+          <ul>
+            <li>명지대학교 통합치료대학원<small>건강운동재활전공 석사과정</small></li>
+            <li>재활 필라테스 · 체형 교정</li>
+            <li>산전 · 산후 회복 프로그램</li>
+            <li>근막이완 · 테이핑 컨디셔닝</li>
+            <li>선수 · 생활체육 컨디셔닝</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec--mist">
+    <div class="wrap reco">
+      <div>
+        <p class="eyebrow" data-reveal="fade">Recommend</p>
+        <h3 class="display d-md" data-reveal="line" style="margin-top:18px"><span class="ln"><span>이런 분께</span></span></h3>
+      </div>
+      <div class="reco__list">
+        <article class="reco__i" data-reveal><b>출산 전후 회복이 필요한 분</b><p>산전산후 전문 과정을 이수했습니다. 복부와 골반저 회복을 순서대로 밟고 그다음 근력으로 넘어갑니다.</p></article>
+        <article class="reco__i" data-reveal style="--d:90ms"><b>체형이 틀어진 분</b><p>거북목, 말린 어깨, 골반 비대칭처럼 좌우 차이가 큰 경우를 주로 봅니다. 분석 결과를 사진으로 남겨 비교합니다.</p></article>
+        <article class="reco__i" data-reveal style="--d:180ms"><b>필라테스가 처음인 분</b><p>기구가 낯설면 매트부터 시작합니다. 호흡과 중립 자세를 잡은 뒤 리포머로 넘어가도 늦지 않습니다.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec--sand">
+    <div class="wrap iquote">
+      <q data-reveal="fade">Alignment before effort.</q>
+      <cite data-reveal="fade" style="--d:150ms">SHIN SEUNG HYUN · SEONGNAE</cite>
+    </div>
+  </section>
+</div>
+
+</div><!-- /panel group -->
+
+<!-- ============ TEAM STRIP ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec__head" style="max-width:560px">
+      <p class="eyebrow" data-reveal="fade">Team</p>
+      <h3 class="display d-md" data-reveal="line"><span class="ln"><span>두 대표, 하나의 기준</span></span></h3>
+      <p class="body-ko" data-reveal style="--d:140ms">필라테스와 웨이트, 각자의 축은 다르지만 수업을 설계하는 순서는 공유합니다.</p>
+    </div>
+    <div class="team">
+      <a href="#jangan" data-tab-jump="jangan" data-reveal>
+        <div class="fig"><img src="assets/img/instructor-lim.jpg" alt="임도영 대표"></div>
+        <div class="team__ov"><b>임도영</b><span>대표 · 장안점 · Personal Training</span></div>
+      </a>
+      <a href="#seongnae" data-tab-jump="seongnae" data-reveal style="--d:120ms">
+        <div class="fig"><img src="assets/img/instructor-shin.jpg" alt="신승현 대표"></div>
+        <div class="team__ov"><b>신승현</b><span>대표 · 성내점 · Rehab Pilates</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="sec sec--navy" style="text-align:center">
+  <div class="wrap">
+    <p class="eyebrow eyebrow--center" style="justify-content:center" data-reveal="fade">Trial Class</p>
+    <h2 class="display d-lg" data-reveal="line" style="margin:18px 0 20px"><span class="ln"><span>담당 강사와 <em class="d-it">직접 상담하세요</em></span></span></h2>
+    <p class="body-ko" data-reveal style="--d:140ms">예약을 남겨주시면 해당 지점 대표가 직접 연락드립니다.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:34px" data-reveal>
+      <a class="btn btn--fill" href="reservation.html" style="background:#fff;color:var(--navy)"><span>상담 예약하기</span></a>
+      <a class="btn btn--ghost" href="branch.html"><span>지점 둘러보기</span></a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__top">
+      <div>
+        <p class="foot__logo">IN BLUE</p>
+        <p class="foot__desc">PT와 필라테스를 함께하는 체형교정 · 재활 전문 스튜디오.<br>서울 장안 · 성내에서 소수 정예로 운영합니다.</p>
+      </div>
+      <div>
+        <h5>Branch</h5>
+        <ul>
+          <li>장안점 · 동대문구 한천로46길 64, 2층</li>
+          <li><a href="tel:01058902008">010.5890.2008</a></li>
+          <li style="height:12px"></li>
+          <li>성내점 · 강동구 양재대로85길 20, 3층</li>
+          <li><a href="tel:01067172008">010.6717.2008</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Menu</h5>
+        <ul>
+          <li><a href="index.html">인블루 소개</a></li>
+          <li><a href="branch.html">지점소개</a></li>
+          <li><a href="instructor.html">강사소개</a></li>
+          <li><a href="before-after.html">비포애프터</a></li>
+          <li><a href="reservation.html">일일 체험 예약</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot__bot">
+      <span>© 2026 PT &amp; Pilates in BLUE. All rights reserved.</span>
+      <span>STUDIO SEOUL — Rehabilitation · Corrective Exercise · Wellness</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/common.js"></script>
+<script>
+/* 프로필 카드: 이미지가 준비되면 덮개를 반드시 걷는다 (탭이 숨겨져 있던 경우 대비) */
+document.querySelectorAll('.icard-fig').forEach(function (fig) {
+  var img = fig.querySelector('img');
+  var show = function () { fig.classList.add('is-in'); };
+  if (!img) { show(); return; }
+  if (img.complete) setTimeout(show, 120);
+  img.addEventListener('load', show);
+  img.addEventListener('error', show);
+});
+
+/* team strip -> switch tab & scroll up */
+document.querySelectorAll('[data-tab-jump]').forEach(function(a){
+  a.addEventListener('click', function(e){
+    e.preventDefault();
+    var key = a.getAttribute('data-tab-jump');
+    var tab = document.querySelector('.tab[data-tab="'+key+'"]');
+    if (tab) tab.click();
+    var bar = document.querySelector('.tabbar');
+    if (bar) window.scrollTo({ top: bar.offsetTop - 60, behavior:'smooth' });
+  });
+});
+</script>
+</body>
+</html>
