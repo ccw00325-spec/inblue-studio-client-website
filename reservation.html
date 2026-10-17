@@ -475,6 +475,7 @@
             <svg class="btn__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </button>
         </div>
+        <p id="submitError" role="alert" aria-live="polite" style="display:none;margin-top:14px;text-align:center;color:#C32E31;font-size:13px"></p>
       </form>
     </div>
 
@@ -549,7 +550,7 @@
   /* 검증 + 제출 */
   function setErr(el, on) { el.closest('.f').classList.toggle('is-err', on); }
 
-  form.addEventListener('submit', function (e) {
+  form.addEventListener('submit', async function (e) {
     e.preventDefault();
     var name = document.getElementById('fName');
     var age = ageSel;
@@ -570,22 +571,36 @@
       return;
     }
 
-    var row = INBLUE.store.add({
-      name: name.value.trim(),
-      phoneTail: phone.value,
-      phone: '010-' + phone.value.slice(0, 4) + '-' + phone.value.slice(4),
-      age: Number(age.value),
-      branch: form.querySelector('input[name="branch"]:checked').value,
-      interest: document.getElementById('fInterest').value || '',
-      time: document.getElementById('fTime').value || '아무 때나',
-      memo: document.getElementById('fMemo').value.trim()
-    });
+    var submit = form.querySelector('button[type="submit"]');
+    var submitLabel = submit.querySelector('span');
+    var errorMessage = document.getElementById('submitError');
+    submit.disabled = true;
+    submitLabel.textContent = '접수 중입니다';
+    errorMessage.style.display = 'none';
 
-    document.getElementById('doneId').textContent = '접수번호 ' + row.id;
-    modal.classList.add('is-done');
-    modal.querySelector('.modal__box').scrollTop = 0;
-    form.reset();
-    ageSel.value = '';
+    try {
+      var row = await INBLUE.api.create({
+        name: name.value.trim(),
+        phoneTail: phone.value,
+        age: Number(age.value),
+        branch: form.querySelector('input[name="branch"]:checked').value,
+        interest: document.getElementById('fInterest').value || '',
+        time: document.getElementById('fTime').value || '아무 때나',
+        memo: document.getElementById('fMemo').value.trim()
+      });
+
+      document.getElementById('doneId').textContent = '접수번호 ' + row.id;
+      modal.classList.add('is-done');
+      modal.querySelector('.modal__box').scrollTop = 0;
+      form.reset();
+      ageSel.value = '';
+    } catch (error) {
+      errorMessage.textContent = error.message || '접수 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+      errorMessage.style.display = 'block';
+    } finally {
+      submit.disabled = false;
+      submitLabel.textContent = '예약 문의 보내기';
+    }
   });
 })();
 </script>

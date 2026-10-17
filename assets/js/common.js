@@ -356,6 +356,40 @@
     }
   };
 
+  /* ---------------- Server inquiry API ---------------- */
+  var Api = {
+    password: '',
+    setPassword: function (password) {
+      Api.password = String(password || '');
+    },
+    request: function (method, body, query) {
+      var url = '/api/inquiries' + (query ? '?' + new URLSearchParams(query).toString() : '');
+      var headers = { 'Accept': 'application/json' };
+      if (body != null) headers['Content-Type'] = 'application/json';
+      if (Api.password) headers.Authorization = 'Basic ' + btoa(unescape(encodeURIComponent('admin:' + Api.password)));
+
+      return fetch(url, {
+        method: method,
+        headers: headers,
+        body: body == null ? undefined : JSON.stringify(body),
+        credentials: 'same-origin'
+      }).then(function (response) {
+        return response.json().catch(function () { return {}; }).then(function (data) {
+          if (!response.ok) {
+            var error = new Error(data.error || '요청을 처리하지 못했습니다.');
+            error.status = response.status;
+            throw error;
+          }
+          return data;
+        });
+      });
+    },
+    create: function (data) { return Api.request('POST', data); },
+    all: function () { return Api.request('GET').then(function (data) { return data.inquiries || []; }); },
+    update: function (id, patch) { return Api.request('PATCH', { id: id, patch: patch }).then(function (data) { return data.inquiry; }); },
+    remove: function (id) { return Api.request('DELETE', null, { id: id }); }
+  };
+
   /* ---------------- Helpers ---------------- */
   var Util = {
     badge: function (n) { return n > 99 ? '99+' : String(n); },
@@ -379,7 +413,7 @@
     }
   };
 
-  window.INBLUE = { store: Store, util: Util, rescanReveal: rescanReveal };
+  window.INBLUE = { store: Store, api: Api, util: Util, rescanReveal: rescanReveal };
 
   /* ---------------- Boot ---------------- */
   document.addEventListener('DOMContentLoaded', function () {
