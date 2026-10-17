@@ -12,7 +12,7 @@
 |---|---|---|
 | `index.html` | Introduction to IN BLUE / 인블루 소개 | 브랜드 소개, 3대 프로그램(PILATES + PT + CONDITIONING), 50분 수업 흐름 |
 | `branch.html` | Branch Introduction / 지점소개 | 상단 탭으로 **장안점 / 성내점** 전환, 시설 사진·특징·보유 기구 |
-| `instructor.html` | Instructor Introduction / 강사소개 | 상단 탭으로 지점 전환, 임도영 대표(장안) · 신승현 대표(성내) 자격/경력 |
+| `instructor.html` | Instructor Introduction / 강사소개 | 상단 탭으로 지점 전환, 신승현 대표(장안) · 임도영 대표(성내) 자격/경력 |
 | `before-after.html` | Before & After / 비포애프터 | 프로그램 4종, BEFORE → PROCESS → AFTER, 변화 슬라이더, 사례 카드 |
 | `reservation.html` | Reservation / 일일 체험 예약 | CHOOSE YOUR STUDIO, 지점별 사진·강사·네이버 플레이스, **상담 예약 폼** |
 | `admin.html` | (비공개) | 접수된 상담 문의 확인 · 전화 연결 · 상태 관리 |
