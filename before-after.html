@@ -4,10 +4,131 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=1280">
 <title>비포애프터 | PT &amp; Pilates in BLUE</title>
-<meta name="description" content="체형교정·재활, 다이어트·바디라인, 척추·컨디셔닝, 산전산후까지. IN BLUE 회원들의 실제 변화 기록.">
+<meta name="description" content="거북목·라운드숄더, 허리 통증, 어깨 재활, 골반 밸런스, 다이어트까지. IN BLUE 회원님들의 운동 전·후 사진과 인바디 기록.">
 <link rel="icon" href="assets/img/logo-mark.jpg">
 <link rel="stylesheet" href="assets/css/common.css">
 <style>
+/* ===== Hero summary ===== */
+.hsum{ display:flex; gap:clamp(28px,4vw,64px); margin-top:clamp(34px,4vw,56px); padding-top:26px; border-top:1px solid var(--line); max-width:620px; }
+.hsum div span{ display:block; font-size:11px; letter-spacing:.2em; color:var(--gray-light); margin-bottom:6px; }
+.hsum div b{ font-variant-numeric:lining-nums; font-feature-settings:'lnum' 1; font-family:var(--ff-serif); font-size:clamp(30px,3vw,44px); font-weight:400; color:var(--navy-deep); line-height:1; }
+.hsum div b small{ font-family:var(--ff-sans); font-size:13px; font-weight:500; color:var(--gray); margin-left:6px; letter-spacing:-.02em; }
+
+/* ===== Featured case ===== */
+.feat{ display:grid; grid-template-columns:minmax(0,430px) minmax(0,1fr); gap:clamp(36px,5.5vw,96px); align-items:start; }
+.case__tag{
+  display:inline-flex; align-items:center; gap:8px; height:32px; padding:0 15px; border-radius:999px;
+  background:var(--navy); color:#fff; font-size:11.5px; font-weight:600; letter-spacing:.08em;
+}
+.case__title{ font-size:clamp(28px,3.4vw,50px); font-weight:700; letter-spacing:-.05em; color:var(--navy-deep); line-height:1.22; margin:18px 0 18px; }
+.case__title em{ font-family:var(--ff-serif); font-style:italic; font-weight:300; color:var(--blue); }
+.case__meta{ display:flex; gap:clamp(18px,2.4vw,40px); margin:30px 0 34px; padding:20px 0; border-block:1px solid var(--sand-deep); }
+.case__meta div span{ display:block; font-size:11px; letter-spacing:.16em; color:var(--gray-light); margin-bottom:5px; }
+.case__meta div b{ font-size:15px; font-weight:600; color:var(--navy-deep); letter-spacing:-.03em; }
+
+/* Before/After slider */
+.ba{ position:relative; overflow:hidden; user-select:none; touch-action:pan-y; cursor:ew-resize; background:var(--mist); aspect-ratio:711/1400; box-shadow:0 30px 70px rgba(11,20,54,.14); }
+.ba__img{ position:absolute; inset:0; }
+.ba__img img{ width:100%; height:100%; object-fit:cover; pointer-events:none; }
+.ba__after{ clip-path:inset(0 0 0 50%); }
+.ba__lab{
+  position:absolute; top:18px; z-index:4; font-size:11px; letter-spacing:.2em; font-weight:600;
+  padding:7px 14px; background:rgba(255,255,255,.92); color:var(--navy); backdrop-filter:blur(6px);
+}
+.ba__before .ba__lab{ left:18px; }
+.ba__after .ba__lab{ right:18px; background:var(--navy); color:#fff; }
+.ba__handle{ position:absolute; top:0; bottom:0; left:50%; width:2px; background:#fff; z-index:5; box-shadow:0 0 18px rgba(11,20,54,.4); }
+.ba__handle i{
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:48px; height:48px; border-radius:50%; background:#fff; color:var(--navy);
+  display:grid; place-items:center; box-shadow:0 8px 26px rgba(11,20,54,.3); font-style:normal;
+}
+.ba__hint{ margin-top:14px; font-size:12px; color:var(--gray); letter-spacing:.04em; text-align:center; }
+
+/* Body check list */
+.chk__h{ font-size:11px; font-weight:600; letter-spacing:.2em; color:var(--blue); margin-bottom:14px; }
+.chk__row{ display:grid; grid-template-columns:92px 1fr 26px 1fr; align-items:center; gap:14px; padding:16px 0; border-bottom:1px solid var(--sand-deep); }
+.chk__row:first-of-type{ border-top:1px solid var(--sand-deep); }
+.chk__part{ font-family:var(--ff-serif); font-size:20px; color:var(--navy-deep); }
+.chk__b{ font-size:13.5px; color:var(--gray); letter-spacing:-.03em; }
+.chk__a{ font-size:14px; font-weight:600; color:var(--navy-deep); letter-spacing:-.03em; }
+.chk__ar{ color:var(--blue-soft); }
+.feat__fig{ margin-top:34px; display:grid; grid-template-columns:200px 1fr; gap:22px; align-items:center; }
+.feat__fig img{ width:100%; height:auto; border:1px solid var(--sand-deep); transition:transform .6s var(--ease); }
+.feat__fig img:hover{ transform:translateY(-4px); }
+.feat__fig p{ font-size:13px; color:var(--gray); line-height:1.9; }
+
+/* ===== Process timeline ===== */
+.tl{ position:relative; margin-top:clamp(56px,6vw,96px); }
+.tl::before{ content:""; position:absolute; left:0; right:0; top:11px; height:1px; background:var(--line-strong); }
+.tl__row{ display:grid; grid-template-columns:repeat(5,1fr); gap:clamp(10px,1.4vw,22px); position:relative; }
+.tl__i{ padding-top:34px; position:relative; }
+.tl__i::before{
+  content:""; position:absolute; top:5px; left:0; width:13px; height:13px; border-radius:50%;
+  background:#fff; border:1.5px solid var(--blue-soft); transition:.5s var(--ease);
+}
+.tl__i:hover::before{ background:var(--navy); border-color:var(--navy); transform:scale(1.2); }
+.tl__n{ font-family:var(--ff-serif); font-size:11.5px; letter-spacing:.2em; color:var(--blue); display:block; margin-bottom:10px; }
+.tl__t{ font-size:clamp(15px,1.3vw,18.5px); font-weight:700; letter-spacing:-.04em; color:var(--navy-deep); margin-bottom:8px; }
+.tl__d{ font-size:13px; color:var(--gray); line-height:1.9; }
+
+/* ===== Numbers ===== */
+.stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+.stat{ background:#fff; padding:clamp(22px,2.4vw,34px); transition:background .5s var(--ease); }
+.stat:hover{ background:var(--paper); }
+.stat__k{ display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:600; color:var(--ink-soft); letter-spacing:-.02em; }
+.stat__k em{ font-style:normal; font-size:10.5px; font-weight:600; letter-spacing:.12em; color:#fff; background:var(--navy); padding:2px 8px; border-radius:999px; }
+.stat__v{ font-variant-numeric:lining-nums; font-feature-settings:'lnum' 1; font-family:var(--ff-serif); font-size:clamp(46px,4.6vw,68px); font-weight:300; color:var(--navy-deep); line-height:1; margin:14px 0 12px; letter-spacing:-.02em; }
+.stat__v small{ font-size:.42em; color:var(--blue); margin-left:4px; font-style:italic; }
+.stat__ft{ display:flex; justify-content:space-between; gap:10px; font-size:12px; color:var(--gray); letter-spacing:.01em; }
+.stat__ft b{ font-weight:500; color:var(--ink-soft); }
+
+.rec{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(16px,2vw,28px); margin-top:clamp(24px,3vw,44px); align-items:stretch; }
+.rec__i{ background:var(--sand); }
+.rec__i > img{ width:100%; height:auto; transition:transform .6s var(--ease); }
+.rec__i:hover > img{ transform:translateY(-4px); }
+.rec__b{ padding:clamp(20px,2.2vw,28px); }
+.rec__tag{ font-family:var(--ff-serif); font-size:13px; letter-spacing:.3em; color:var(--blue); }
+.rec__t{ font-size:clamp(17px,1.5vw,21px); font-weight:700; letter-spacing:-.04em; color:var(--navy-deep); margin:6px 0 4px; }
+.rec__p{ font-size:12.5px; color:var(--gray); letter-spacing:.01em; line-height:1.8; }
+.rec__rows{ margin-top:14px; }
+.rec__rows li{ display:flex; justify-content:space-between; align-items:baseline; padding:9px 0; border-top:1px solid var(--sand-deep); font-size:13px; color:var(--ink-soft); }
+.rec__rows b{ font-variant-numeric:lining-nums; font-feature-settings:'lnum' 1; font-family:var(--ff-serif); font-size:19px; font-weight:500; color:var(--navy-deep); letter-spacing:0; }
+.rec__rows b small{ font-family:var(--ff-sans); font-size:11.5px; color:var(--gray); margin-left:3px; }
+
+/* ===== Archive ===== */
+.filt{ display:flex; gap:clamp(6px,1.4vw,22px); flex-wrap:wrap; border-bottom:1px solid var(--line-strong); margin-bottom:clamp(30px,3.4vw,50px); }
+.filt button{ position:relative; display:flex; flex-direction:column; align-items:flex-start; gap:2px; padding:12px 6px 16px; }
+.filt .en{ font-family:var(--ff-serif); font-size:clamp(17px,1.6vw,22px); color:var(--gray); transition:color .4s; }
+.filt .en sup{ font-family:var(--ff-sans); font-size:10px; letter-spacing:.04em; margin-left:4px; color:var(--gray-light); }
+.filt .ko{ font-size:11px; letter-spacing:.08em; color:var(--gray-light); transition:color .4s; }
+.filt button::after{ content:""; position:absolute; left:0; right:0; bottom:-1px; height:2px; background:var(--navy); transform:scaleX(0); transform-origin:left; transition:transform .5s var(--ease); }
+.filt button:hover .en{ color:var(--navy-deep); }
+.filt button.is-on .en{ color:var(--navy-deep); }
+.filt button.is-on .ko{ color:var(--blue); }
+.filt button.is-on::after{ transform:scaleX(1); }
+
+.arch{ columns:3; column-gap:clamp(16px,2vw,28px); }
+.acard{ display:inline-block; width:100%; break-inside:avoid; margin-bottom:clamp(16px,2vw,28px); background:#fff; border:1px solid var(--line); transition:box-shadow .55s var(--ease), transform .55s var(--ease); }
+.acard:hover{ box-shadow:0 26px 60px rgba(11,20,54,.1); transform:translateY(-6px); }
+.acard[hidden]{ display:none; }
+.acard__fig{ position:relative; background:var(--mist); }
+.acard__fig > img{ width:100%; height:auto; }
+.acard__top{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+.acard__more{
+  flex:none; display:flex; align-items:center; gap:7px; padding:3px 11px 3px 3px; margin-top:-3px;
+  border:1px solid var(--line); border-radius:999px; background:#fff; transition:border-color .4s, box-shadow .4s var(--ease);
+}
+.acard__more:hover{ border-color:var(--blue-soft); box-shadow:0 8px 20px rgba(11,20,54,.1); }
+.acard__more img{ width:26px; height:26px; border-radius:50%; object-fit:cover; object-position:top; }
+.acard__more span{ font-size:11px; font-weight:600; letter-spacing:.02em; color:var(--navy); white-space:nowrap; }
+.acard__b{ padding:22px 22px 24px; }
+.chips{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+.chips li{ font-size:11px; letter-spacing:.02em; color:var(--blue); background:var(--mist); border-radius:999px; padding:4px 11px; }
+.chips li.is-key{ background:var(--navy); color:#fff; }
+.acard__t{ font-size:17px; font-weight:700; letter-spacing:-.04em; color:var(--navy-deep); line-height:1.45; margin-bottom:8px; }
+.acard__d{ font-size:13px; color:var(--gray); line-height:1.9; }
+
 /* ===== Program grid ===== */
 .prog{ display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(12px,1.6vw,26px); }
 .prog__i{
@@ -26,114 +147,32 @@
 .prog__t small{ display:block; font-family:var(--ff-serif); font-size:12px; font-weight:400; letter-spacing:.14em; color:var(--blue); margin-top:6px; }
 .prog__d{ font-size:13.5px; color:var(--gray); line-height:1.95; }
 
-/* ===== Stage : BEFORE -> PROCESS -> AFTER ===== */
-.stage{ display:grid; grid-template-columns:1fr auto 1fr auto 1fr; align-items:center; gap:clamp(8px,1.4vw,20px); }
-.stage__i{ text-align:center; padding:clamp(24px,3vw,44px) 12px; }
-.stage__lab{ font-family:var(--ff-serif); font-size:clamp(24px,3.2vw,46px); color:var(--navy-deep); letter-spacing:.08em; line-height:1.1; }
-.stage__i.is-mid .stage__lab{ color:var(--blue); font-style:italic; }
-.stage__ko{ font-size:13px; color:var(--gray); margin-top:10px; letter-spacing:-.02em; }
-.stage__ar{ color:var(--blue-soft); display:grid; place-items:center; }
-
-/* ===== Case ===== */
-.case{ position:relative; }
-.case__head{ display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; margin-bottom:clamp(24px,3vw,44px); }
-.case__tag{
-  display:inline-flex; align-items:center; gap:8px; height:32px; padding:0 15px; border-radius:999px;
-  background:var(--navy); color:#fff; font-size:11.5px; font-weight:600; letter-spacing:.08em;
-}
-.case__title{ font-size:clamp(26px,3.6vw,52px); font-weight:700; letter-spacing:-.05em; color:var(--navy-deep); line-height:1.2; margin-top:16px; }
-.case__title em{ font-family:var(--ff-serif); font-style:italic; font-weight:300; color:var(--blue); }
-.case__meta{ display:flex; gap:clamp(18px,2.4vw,40px); }
-.case__meta div span{ display:block; font-size:11px; letter-spacing:.16em; color:var(--gray-light); margin-bottom:5px; }
-.case__meta div b{ font-size:15px; font-weight:600; color:var(--navy-deep); letter-spacing:-.03em; }
-
-/* Before/After slider */
-.ba{ position:relative; overflow:hidden; user-select:none; touch-action:pan-y; cursor:ew-resize; background:var(--mist); aspect-ratio:16/10; }
-.ba__img{ position:absolute; inset:0; }
-.ba__img img{ width:100%; height:100%; object-fit:cover; pointer-events:none; }
-.ba__after{ clip-path:inset(0 0 0 50%); }
-.ba__lab{
-  position:absolute; top:18px; z-index:4; font-size:11px; letter-spacing:.2em; font-weight:600;
-  padding:7px 14px; background:rgba(255,255,255,.92); color:var(--navy); backdrop-filter:blur(6px);
-}
-.ba__before .ba__lab{ left:18px; }
-.ba__after .ba__lab{ right:18px; background:var(--navy); color:#fff; }
-.ba__handle{ position:absolute; top:0; bottom:0; left:50%; width:2px; background:#fff; z-index:5; box-shadow:0 0 18px rgba(11,20,54,.4); }
-.ba__handle i{
-  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-  width:48px; height:48px; border-radius:50%; background:#fff; color:var(--navy);
-  display:grid; place-items:center; box-shadow:0 8px 26px rgba(11,20,54,.3); font-style:normal;
-}
-.ba__hint{ margin-top:14px; font-size:12px; color:var(--gray-light); letter-spacing:.04em; text-align:center; }
-
-/* Split before/after (static pair) */
-.pair{ display:grid; grid-template-columns:1fr 1fr; gap:6px; }
-.pair figure{ position:relative; }
-.pair figcaption{
-  position:absolute; left:14px; top:14px; z-index:4; font-size:11px; letter-spacing:.2em; font-weight:600;
-  padding:6px 13px; background:rgba(255,255,255,.92); color:var(--navy);
-}
-.pair figure:last-child figcaption{ background:var(--navy); color:#fff; }
-
-/* Photo slot (placeholder until real photo is dropped in) */
-.slot{ position:relative; background:var(--mist); overflow:hidden; }
-.slot img{ width:100%; height:100%; object-fit:cover; display:block; }
-.slot__ph{
-  position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center; gap:12px;
-  background:
-    repeating-linear-gradient(135deg, var(--mist) 0 14px, var(--mist-deep) 14px 15px);
-  color:var(--gray);
-}
-.slot.is-empty img{ visibility:hidden; }
-.slot.is-empty .slot__ph{ display:flex; }
-.slot__ph img{ width:52px; height:auto; opacity:.35; mix-blend-mode:multiply; }
-.slot__ph b{ font-size:12.5px; letter-spacing:.06em; color:var(--navy-deep); font-weight:600; }
-.slot__ph code{ font-size:10.5px; letter-spacing:.02em; color:var(--gray-light); font-family:ui-monospace,Menlo,Consolas,monospace; }
-
-/* ===== Process timeline ===== */
-.tl{ position:relative; margin-top:clamp(36px,4vw,60px); }
-.tl::before{ content:""; position:absolute; left:0; right:0; top:11px; height:1px; background:var(--line-strong); }
-.tl__row{ display:grid; grid-template-columns:repeat(5,1fr); gap:clamp(10px,1.4vw,22px); position:relative; }
-.tl__i{ padding-top:34px; position:relative; }
-.tl__i::before{
-  content:""; position:absolute; top:5px; left:0; width:13px; height:13px; border-radius:50%;
-  background:#fff; border:1.5px solid var(--blue-soft); transition:.5s var(--ease);
-}
-.tl__i:hover::before{ background:var(--navy); border-color:var(--navy); transform:scale(1.2); }
-.tl__n{ font-family:var(--ff-serif); font-size:11.5px; letter-spacing:.2em; color:var(--blue); display:block; margin-bottom:10px; }
-.tl__t{ font-size:clamp(15px,1.3vw,18.5px); font-weight:700; letter-spacing:-.04em; color:var(--navy-deep); margin-bottom:8px; }
-.tl__d{ font-size:13px; color:var(--gray); line-height:1.9; }
-
-/* ===== Case list ===== */
-.cases{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(14px,2vw,30px); }
-.cbox{ background:#fff; border:1px solid var(--line); overflow:hidden; transition:.55s var(--ease); }
-.cbox:hover{ box-shadow:0 26px 60px rgba(11,20,54,.1); transform:translateY(-6px); }
-.cbox .pair{ gap:3px; }
-.cbox .slot{ aspect-ratio:3/4; }
-.cbox__b{ padding:22px; }
-.cbox__k{ display:flex; gap:7px; flex-wrap:wrap; margin-bottom:12px; }
-.cbox__k li{ font-size:11px; letter-spacing:.02em; color:var(--blue); background:var(--mist); border-radius:999px; padding:4px 11px; }
-.cbox__t{ font-size:16.5px; font-weight:700; letter-spacing:-.04em; color:var(--navy-deep); margin-bottom:8px; }
-.cbox__d{ font-size:13px; color:var(--gray); line-height:1.9; }
-
 /* ===== Notice ===== */
-.notice{ border:1px solid var(--line); background:var(--paper); padding:clamp(22px,2.6vw,34px); }
+.notice{ border:1px solid var(--line); background:#fff; padding:clamp(22px,2.6vw,34px); }
 .notice h5{ font-size:12px; letter-spacing:.16em; color:var(--blue); font-weight:600; margin-bottom:14px; }
 .notice p{ font-size:13px; color:var(--gray); line-height:1.95; }
 
 @media (max-width:1080px){
-  .prog{ grid-template-columns:1fr 1fr; }
-  .stage{ grid-template-columns:1fr; }
-  .stage__ar{ transform:rotate(90deg); }
+  .feat{ grid-template-columns:1fr; }
+  .feat__ba{ max-width:420px; margin-inline:auto; width:100%; }
+  .stats{ grid-template-columns:1fr 1fr; }
+  .rec{ grid-template-columns:1fr 1fr; }
   .tl__row{ grid-template-columns:1fr 1fr; gap:26px; }
   .tl::before{ display:none; }
-  .cases{ grid-template-columns:1fr 1fr; }
+  .arch{ columns:2; }
+  .prog{ grid-template-columns:1fr 1fr; }
 }
 @media (max-width:640px){
-  .prog{ grid-template-columns:1fr; }
+  .arch{ columns:1; }
+  .stats{ grid-template-columns:1fr; }
+  .rec{ grid-template-columns:1fr; }
   .tl__row{ grid-template-columns:1fr; }
-  .cases{ grid-template-columns:1fr; }
+  .prog{ grid-template-columns:1fr; }
   .case__meta{ flex-wrap:wrap; gap:18px 26px; }
+  .chk__row{ grid-template-columns:86px 1fr; }
+  .chk__ar{ display:none; }
+  .chk__a{ grid-column:2; }
+  .feat__fig{ grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -181,11 +220,358 @@
       운동의 결과를 직접 확인하세요.<br>
       말보다 사진이 빠릅니다.
     </p>
+    <div class="hsum" data-reveal style="--d:260ms">
+      <div><span>CASES</span><b data-sum="all">14<small>건</small></b></div>
+      <div><span>ONE DAY</span><b data-sum="oneday">7<small>건</small></b></div>
+      <div><span>INBODY</span><b>6<small>건</small></b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURED CASE ============ -->
+<section class="sec sec--sand">
+  <div class="wrap">
+    <div class="feat">
+      <div class="feat__ba" data-reveal>
+        <div class="ba" data-ba>
+          <div class="ba__img ba__before">
+            <img src="assets/img/ba/posture-before.jpg" width="711" height="1400" alt="운동 전 측면 자세">
+            <span class="ba__lab">BEFORE</span>
+          </div>
+          <div class="ba__img ba__after">
+            <img src="assets/img/ba/posture-after.jpg" width="711" height="1400" alt="운동 후 측면 자세">
+            <span class="ba__lab">AFTER</span>
+          </div>
+          <div class="ba__handle"><i>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 6 3 12l6 6M15 6l6 6-6 6"/></svg>
+          </i></div>
+        </div>
+        <p class="ba__hint">가운데 손잡이를 좌우로 끌어 비교해 보세요</p>
+      </div>
+
+      <div class="feat__body">
+        <span class="case__tag" data-reveal="fade">FEATURED CASE</span>
+        <h2 class="case__title" data-reveal="line"><span class="ln"><span>거북목 · 라운드숄더,</span></span><span class="ln"><span><em>옆모습</em>이 먼저 바뀝니다</span></span></h2>
+        <p class="body-ko" data-reveal style="--d:120ms">
+          같은 자리, 같은 각도에서 운동 전과 후를 찍었습니다.<br>
+          귀와 어깨, 골반이 한 줄에 가까워질수록 목은 길어 보이고 가슴은 자연스럽게 열립니다.
+        </p>
+
+        <div class="case__meta" data-reveal="fade" style="--d:160ms">
+          <div><span>PROGRAM</span><b>체형교정</b></div>
+          <div><span>FOCUS</span><b>목 · 어깨 · 골반 정렬</b></div>
+          <div><span>PHOTO</span><b>같은 위치 · 같은 각도</b></div>
+        </div>
+
+        <div data-reveal style="--d:200ms">
+          <p class="chk__h">BODY CHECK ZONE · 측면에서 보는 세 곳</p>
+          <div class="chk__row"><span class="chk__part">Head</span><span class="chk__b">머리가 앞으로 나와 있음</span><span class="chk__ar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="chk__a">머리가 정렬되어 목이 길어 보임</span></div>
+          <div class="chk__row"><span class="chk__part">Shoulder</span><span class="chk__b">어깨가 앞으로 말림</span><span class="chk__ar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="chk__a">어깨가 편안하게 열린 자세</span></div>
+          <div class="chk__row"><span class="chk__part">Pelvis</span><span class="chk__b">골반이 앞으로 기울어짐</span><span class="chk__ar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><span class="chk__a">골반이 안정된 위치</span></div>
+        </div>
+
+        <div class="feat__fig" data-reveal="fade" style="--d:240ms">
+          <img src="assets/img/ba/posture-check.jpg" width="647" height="615" alt="바디 체크 존 — 거북목 개선, 라운드숄더 완화, 골반 정렬"
+               data-lb="assets/img/ba/posture-check.jpg" data-cap="BODY CHECK ZONE — 거북목 개선 · 라운드숄더 완화 · 골반 정렬">
+          <p>첫 수업에서 정면·측면·후면 사진을 남기고, 이 세 곳을 기준으로 변화를 기록합니다. 사진을 누르면 크게 볼 수 있습니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl">
+      <div class="tl__row">
+        <div class="tl__i" data-reveal><span class="tl__n">STEP 01</span><h4 class="tl__t">체형 분석</h4><p class="tl__d">정면·측면·후면 사진을 찍고 좌우 차이와 관절 가동범위를 기록합니다.</p></div>
+        <div class="tl__i" data-reveal style="--d:90ms"><span class="tl__n">STEP 02</span><h4 class="tl__t">근막이완</h4><p class="tl__d">동작을 막고 있는 부위부터 풀어 가동범위를 확보합니다.</p></div>
+        <div class="tl__i" data-reveal style="--d:180ms"><span class="tl__n">STEP 03</span><h4 class="tl__t">필라테스</h4><p class="tl__d">기구로 정렬을 잡고 무너진 움직임 패턴을 다시 입력합니다.</p></div>
+        <div class="tl__i" data-reveal style="--d:270ms"><span class="tl__n">STEP 04</span><h4 class="tl__t">코어 안정화</h4><p class="tl__d">잡아놓은 정렬이 일상에서도 유지되도록 중심을 붙듭니다.</p></div>
+        <div class="tl__i" data-reveal style="--d:360ms"><span class="tl__n">STEP 05</span><h4 class="tl__t">웨이트 트레이닝</h4><p class="tl__d">버틸 힘을 올립니다. 여기까지 와야 바뀐 체형이 되돌아가지 않습니다.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NUMBERS ============ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec__head" style="max-width:640px">
+      <p class="eyebrow" data-reveal="fade">Numbers</p>
+      <h2 class="display d-md" data-reveal="line"><span class="ln"><span>숫자로 남은 <em class="d-it">변화</em></span></span></h2>
+      <p class="body-ko" data-reveal style="--d:140ms">회원님들의 인바디 측정 기록에서 옮긴 수치입니다. 측정 날짜도 기록 그대로 적었습니다.</p>
+    </div>
+
+    <div class="stats" data-reveal style="--d:120ms">
+      <div class="stat">
+        <p class="stat__k">체지방량 <em>WEDDING</em></p>
+        <p class="stat__v">−11.2<small>kg</small></p>
+        <p class="stat__ft"><b>31.2 → 20.0</b><span>23.11.06 — 24.02.01</span></p>
+      </div>
+      <div class="stat">
+        <p class="stat__k">체지방량</p>
+        <p class="stat__v">−11.1<small>kg</small></p>
+        <p class="stat__ft"><b>28.2 → 17.1</b><span>23.05.30 — 23.09.10</span></p>
+      </div>
+      <div class="stat">
+        <p class="stat__k">체지방률</p>
+        <p class="stat__v">−11.3<small>%p</small></p>
+        <p class="stat__ft"><b>47.6 → 36.3</b><span>24.09.23 — 25.03.03</span></p>
+      </div>
+      <div class="stat">
+        <p class="stat__k">몸무게</p>
+        <p class="stat__v">−9.0<small>kg</small></p>
+        <p class="stat__ft"><b>102.9 → 93.9</b><span>23.08.01 — 09.27</span></p>
+      </div>
+      <div class="stat">
+        <p class="stat__k">몸무게</p>
+        <p class="stat__v">−6.6<small>kg</small></p>
+        <p class="stat__ft"><b>127.5 → 120.9</b><span>23.09.11 — 09.26</span></p>
+      </div>
+      <div class="stat">
+        <p class="stat__k">체지방량</p>
+        <p class="stat__v">−4.8<small>kg</small></p>
+        <p class="stat__ft"><b>26.7 → 21.9</b><span>23.05.24 — 23.08.15</span></p>
+      </div>
+    </div>
+    <div class="rec">
+      <article class="rec__i" data-reveal>
+        <img src="assets/img/ba/wedding.jpg" width="794" height="1123" alt="웨딩 촬영을 준비한 회원님의 인바디 기록" loading="lazy"
+             data-lb="assets/img/ba/wedding.jpg" data-cap="WEDDING — 23.11.06 ~ 24.02.01 인바디 기록">
+        <div class="rec__b">
+          <p class="rec__tag">WEDDING</p>
+          <h3 class="rec__t">드레스를 입기 전, 세 번의 측정</h3>
+          <p class="rec__p">23.11.06 — 24.02.01</p>
+          <ul class="rec__rows">
+            <li>체중<b>72.0 → 61.5<small>kg</small></b></li>
+            <li>골격근량<b>22.1 → 22.6<small>kg</small></b></li>
+            <li>체지방량<b>31.2 → 20.0<small>kg</small></b></li>
+          </ul>
+        </div>
+      </article>
+      <article class="rec__i" data-reveal style="--d:110ms">
+        <img src="assets/img/ba/diet-record-01.jpg" width="794" height="1123" alt="다이어트 인바디 기록 — 체지방량과 몸무게" loading="lazy"
+             data-lb="assets/img/ba/diet-record-01.jpg" data-cap="다이어트 — 체지방량 · 몸무게 변화 기록">
+        <div class="rec__b">
+          <p class="rec__tag">DIET 01</p>
+          <h3 class="rec__t">체지방량 · 몸무게 기록</h3>
+          <p class="rec__p">−4.8kg, −11.2kg, −6.6kg. 회원님 세 분의 측정 그래프입니다.</p>
+        </div>
+      </article>
+      <article class="rec__i" data-reveal style="--d:220ms">
+        <img src="assets/img/ba/diet-record-02.jpg" width="794" height="1123" alt="다이어트 인바디 기록 — 체지방량, 체지방률, 몸무게" loading="lazy"
+             data-lb="assets/img/ba/diet-record-02.jpg" data-cap="다이어트 — 체지방량 · 체지방률 · 몸무게 변화 기록">
+        <div class="rec__b">
+          <p class="rec__tag">DIET 02</p>
+          <h3 class="rec__t">체지방량 · 체지방률 · 몸무게 기록</h3>
+          <p class="rec__p">−11.1kg, −11.3%p, −9kg. 회원님 세 분의 측정 그래프입니다.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CASE ARCHIVE ============ -->
+<section class="sec sec--mist" id="cases">
+  <div class="wrap">
+    <div class="sec__head" style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap">
+      <div style="max-width:560px">
+        <p class="eyebrow" data-reveal="fade">Records</p>
+        <h2 class="display d-md" data-reveal="line"><span class="ln"><span>회원님들의 기록</span></span></h2>
+        <p class="body-ko" data-reveal style="--d:140ms">고민별로 골라 보세요. 사진을 누르면 크게 볼 수 있습니다.</p>
+      </div>
+      <a class="btn btn--line btn--sm" href="reservation.html" data-reveal="fade"><span>나도 시작하기</span></a>
+    </div>
+
+    <div class="filt" role="tablist" aria-label="사례 분류" data-reveal="fade">
+      <button class="is-on" data-filter="all" role="tab" aria-selected="true"><span class="en">All<sup></sup></span><span class="ko">전체</span></button>
+      <button data-filter="posture" role="tab" aria-selected="false"><span class="en">Posture<sup></sup></span><span class="ko">체형교정</span></button>
+      <button data-filter="rehab" role="tab" aria-selected="false"><span class="en">Rehab<sup></sup></span><span class="ko">통증 · 재활</span></button>
+      <button data-filter="line" role="tab" aria-selected="false"><span class="en">Body Line<sup></sup></span><span class="ko">다이어트 · 라인</span></button>
+      <button data-filter="oneday" role="tab" aria-selected="false"><span class="en">One Day<sup></sup></span><span class="ko">원데이 1회 수업</span></button>
+    </div>
+
+    <div class="arch">
+
+      <article class="acard" data-cat="posture oneday" data-reveal>
+        <div class="acard__fig">
+          <img src="assets/img/ba/neck-shoulder-01.jpg" width="1055" height="1491" alt="거북목·라운드숄더 케어 전후 비교" loading="lazy"
+               data-lb="assets/img/ba/neck-shoulder-01.jpg" data-cap="거북목 · 라운드숄더 케어 — 1회 30분 수업 후">
+        </div>
+        <div class="acard__b">
+          <div class="acard__top"><ul class="chips"><li class="is-key">체형교정</li><li>원데이 1회 · 30분</li></ul><button class="acard__more" type="button" data-lb="assets/img/ba/neck-shoulder-02.jpg" data-cap="거북목 · 라운드숄더 — 1회 30분 진행 후"><img src="assets/img/ba/neck-shoulder-02.jpg" alt="" loading="lazy"><span>사진 +1</span></button></div>
+          <h3 class="acard__t">거북목 · 라운드숄더 케어</h3>
+          <p class="acard__d">목·어깨 정렬과 상체 밸런스를 확인한 사례입니다. 짧은 수업 한 번으로도 앞으로 나와 있던 머리 위치가 달라졌습니다.</p>
+        </div>
+      </article>
+
+      <article class="acard" data-cat="rehab" data-reveal>
+        <div class="acard__fig">
+          <img src="assets/img/ba/back-surgery-01.jpg" width="1254" height="1254" alt="허리 수술 후 통증 개선 전후 비교" loading="lazy"
+               data-lb="assets/img/ba/back-surgery-01.jpg" data-cap="체형교정을 통한 허리 통증 개선 사례">
+        </div>
+        <div class="acard__b">
+          <div class="acard__top"><ul class="chips"><li class="is-key">통증 · 재활</li><li>허리</li></ul><button class="acard__more" type="button" data-lb="assets/img/ba/back-surgery-02.jpg" data-cap="수술 후에도 지속된 허리 통증 — 체형교정을 통한 개선"><img src="assets/img/ba/back-surgery-02.jpg" alt="" loading="lazy"><span>사진 +1</span></button></div>
+          <h3 class="acard__t">허리 수술을 두 번 받고도 남아 있던 통증</h3>
+          <p class="acard__d">통증의 원인부터 찾았습니다. 어깨 높이, 틀어진 골반, 척추 정렬을 차례로 바로잡자 허리 부담이 줄고 일상의 움직임이 편해졌습니다.</p>
+        </div>
+      </article>
+
+      <article class="acard" data-cat="line oneday" data-reveal>
+        <div class="acard__fig">
+          <img src="assets/img/ba/back-shoulder.jpg" width="1600" height="1000" alt="50분 원데이클래스 전후 등과 어깨 비교" loading="lazy"
+               data-lb="assets/img/ba/back-shoulder.jpg" data-cap="운동을 해도 넓어지지 않던 어깨 — 50분 원데이클래스 전후">
+        </div>
+        <div class="acard__b">
+          <ul class="chips"><li class="is-key">바디라인</li><li>원데이 1회 · 50분</li></ul>
+          <h3 class="acard__t">운동을 해도 넓어지지 않던 어깨</h3>
+          <p class="acard__d">50분 원데이 클래스 전과 후의 뒷모습입니다. 쓰지 못하던 등 근육이 살아나면서 어깨 라인이 한층 또렷해졌습니다.</p>
+        </div>
+      </article>
+
+      <article class="acard" data-cat="line oneday" data-reveal>
+        <div class="acard__fig">
+          <img src="assets/img/ba/waist-line-01.jpg" width="1024" height="1536" alt="운동 후 달라진 허리 라인" loading="lazy"
+               data-lb="assets/img/ba/waist-line-01.jpg" data-cap="BASTM 근막이완 + 필라테스 — 운동 후 달라진 허리 라인">
+        </div>
+        <div class="acard__b">
+          <div class="acard__top"><ul class="chips"><li class="is-key">바디라인</li><li>원데이 1회 · 50분</li></ul><button class="acard__more" type="button" data-lb="assets/img/ba/waist-line-02.jpg" data-cap="원데이 허리 라인 — 1회 50분 진행 후"><img src="assets/img/ba/waist-line-02.jpg" alt="" loading="lazy"><span>사진 +1</span></button></div>
+          <h3 class="acard__t">두꺼워 보이던 허리, 옆구리 라인부터</h3>
+          <p class="acard__d">BASTM 근막이완, 필라테스, 코어 안정화 순서로 진행했습니다. 옆구리 라인이 정리되고 허리 볼륨이 줄었습니다.</p>
+        </div>
+      </article>
+
+      <article class="acard" data-cat="posture" data-reveal>
+        <div class="acard__fig">
+          <img src="assets/img/ba/round-back.jpg" width="1312" height="1199" alt="굽은 등 개선 운동 전후 비교" loading="lazy"
+               data-lb="assets/img/ba/round-back.jpg" data-cap="굽은 등 개선 — 흉추 정렬과 어깨 기능 회복 PT + 필라테스">
+        </div>
+        <div class="acard__b">
+          <ul class="chips"><li class="is-key">체형교정</li><li>PT + 필라테스</li></ul>
+          <h3 class="acard__t">굽은 등, 펴는 것만으로는 부족합니다</h3>
+          <p class="acard__d">흉추 정렬과 어깨 기능을 함께 회복하는 수업입니다. 앞으로 나온 머리와 말린 어깨가 제자리를 찾고, 굽어 있던 흉추가 펴졌습니다.</p>
+        </div>
+      </article>
+
+      <article class="acard" data-cat="rehab" data-reveal>
+        <div class="acard__fig">
+          <img src="assets/img/ba/shoulder-rehab-01.jpg" width="1536" height="1024" alt="어깨 가동성 개선 전후 비교" loading="lazy"
+               data-lb="assets/img/ba/shoulder-rehab-01.jpg" data-cap="병원 어깨 재활 이후, 운동을 통한 어깨 가동성 개선">
+        </div>
+        <div class="acard__b">
+          <div class="acard__top"><ul class="chips"><li class="is-key">통증 · 재활</li><li>어깨</li></ul><button class="acard__more" type="button" data-lb="assets/img/ba/shoulder-rehab-02.jpg" data-cap="뇌경색 신경저하 재활 — 운동을 통한 어깨 개선 사례"><img src="assets/img/ba/shoulder-rehab-02.jpg" alt="" loading="lazy"><span>사진 +1</span></button></div>
+          <h3 class="acard__t">뇌경색 이후 올라가지 않던 팔</h3>
+          <p class="acard__d">병원 어깨 재활로 나아지지 않던 회원님입니다. 어깨만 보지 않고 흉추와 견갑골까지 이어서 접근하자 팔을 올리는 범위가 넓어졌습니다.</p>
+        </div>
+      </article>
+
+      <article class="acard" data-cat="line" data-reveal>
+        <div class="acard__fig">
+          <img src="assets/img/ba/lowerbody-line.jpg" width="1536" height="1024" alt="하체비만 개선 과정" loading="lazy"
+               data-lb="assets/img/ba/lowerbody-line.jpg" data-cap="하체비만 개선과 바른 체형 라인">
+        </div>
+        <div class="acard__b">
+          <ul class="chips"><li class="is-key">바디라인</li><li>하체</li></ul>
+          <h3 class="acard__t">하체비만, 체중보다 균형부터</h3>
+          <p class="acard__d">하체가 고민이던 회원님의 변화 과정입니다. 골반 정렬과 하체 사용 패턴을 바꾸자 부종이 빠지고 라인이 정리됐습니다.</p>
+        </div>
+      </article>
+
+      <article class="acard" data-cat="posture oneday" data-reveal>
+        <div class="acard__fig">
+          <img src="assets/img/ba/pelvis-balance-01.jpg" width="1055" height="1491" alt="원데이 골반 밸런스 케어 전후" loading="lazy"
+               data-lb="assets/img/ba/pelvis-balance-01.jpg" data-cap="원데이 골반 밸런스 케어 — 수업 전 · 후">
+        </div>
+        <div class="acard__b">
+          <div class="acard__top"><ul class="chips"><li class="is-key">체형교정</li><li>원데이 1회</li></ul><button class="acard__more" type="button" data-lb="assets/img/ba/pelvis-balance-02.jpg" data-cap="원데이 비대칭 교정 — 골반"><img src="assets/img/ba/pelvis-balance-02.jpg" alt="" loading="lazy"><span>사진 +1</span></button></div>
+          <h3 class="acard__t">원데이 골반 밸런스 케어</h3>
+          <p class="acard__d">한 번의 수업으로 좌우 균형과 움직임 패턴을 확인했습니다. 한쪽으로 기울어 있던 골반 높이가 맞춰졌습니다.</p>
+        </div>
+      </article>
+
+      <article class="acard" data-cat="line" data-reveal>
+        <div class="acard__fig">
+          <img src="assets/img/ba/hip-line-01.jpg" width="1254" height="1254" alt="운동 전후 허리 곡선과 힙 윤곽 비교" loading="lazy"
+               data-lb="assets/img/ba/hip-line-01.jpg" data-cap="운동 전 · 후 비교 — 허리 곡선과 힙 상부 윤곽">
+        </div>
+        <div class="acard__b">
+          <div class="acard__top"><ul class="chips"><li class="is-key">바디라인</li><li>힙업</li></ul><button class="acard__more" type="button" data-lb="assets/img/ba/hip-line-02.jpg" data-cap="힙업 — 운동 전 · 후"><img src="assets/img/ba/hip-line-02.jpg" alt="" loading="lazy"><span>사진 +1</span></button></div>
+          <h3 class="acard__t">허리 곡선과 힙 상부 윤곽</h3>
+          <p class="acard__d">같은 눈금 앞에서 옆모습을 비교했습니다. 허리 곡선이 자연스러워지고 힙 위쪽 윤곽이 살아났습니다.</p>
+        </div>
+      </article>
+
+      <article class="acard" data-cat="posture" data-reveal>
+        <div class="acard__fig">
+          <img src="assets/img/ba/belly-posture.jpg" width="794" height="1123" alt="체형교정 2개월 전후 옆모습" loading="lazy"
+               data-lb="assets/img/ba/belly-posture.jpg" data-cap="체형교정 — 2개월 후">
+        </div>
+        <div class="acard__b">
+          <ul class="chips"><li class="is-key">체형교정</li><li>2개월</li></ul>
+          <h3 class="acard__t">몸무게는 그대로, 뱃살은 정리</h3>
+          <p class="acard__d">배가 나와 보이고 허리 통증이 있던 회원님입니다. 앞 허벅지 발달과 뒤로 빠지는 무릎을 함께 잡았고, 몸무게 변화 없이 복부 라인이 달라졌습니다.</p>
+        </div>
+      </article>
+
+      <article class="acard" data-cat="rehab" data-reveal>
+        <div class="acard__fig">
+          <img src="assets/img/ba/scoliosis-back.jpg" width="794" height="1123" alt="척추측만증 허리 통증 개선 뒷모습 비교" loading="lazy"
+               data-lb="assets/img/ba/scoliosis-back.jpg" data-cap="허리 통증 개선 — 척추측만증 개선 사례">
+        </div>
+        <div class="acard__b">
+          <ul class="chips"><li class="is-key">통증 · 재활</li><li>척추측만</li></ul>
+          <h3 class="acard__t">척추측만증과 허리 통증</h3>
+          <p class="acard__d">뒷모습에서 어깨와 골반의 좌우 높이 차이를 보며 진행한 사례입니다. 몸통이 가운데로 돌아오면서 허리 통증도 함께 줄었습니다.</p>
+        </div>
+      </article>
+
+      <article class="acard" data-cat="line oneday" data-reveal>
+        <div class="acard__fig">
+          <img src="assets/img/ba/hip-oneday-01.jpg" width="794" height="1123" alt="원데이 힙업 전후 비교" loading="lazy"
+               data-lb="assets/img/ba/hip-oneday-01.jpg" data-cap="원데이 힙업 — 1회 50분 진행 후">
+        </div>
+        <div class="acard__b">
+          <div class="acard__top"><ul class="chips"><li class="is-key">바디라인</li><li>원데이 1회 · 50분</li></ul><button class="acard__more" type="button" data-lb="assets/img/ba/hip-oneday-02.jpg" data-cap="원데이 힙업 — 1회 50분 진행 후"><img src="assets/img/ba/hip-oneday-02.jpg" alt="" loading="lazy"><span>사진 +1</span></button></div>
+          <h3 class="acard__t">원데이 힙업</h3>
+          <p class="acard__d">50분 수업 한 번을 마치고 바로 찍은 사진입니다. 잠들어 있던 엉덩이 근육을 깨우면 위쪽 볼륨부터 달라집니다.</p>
+        </div>
+      </article>
+
+      <article class="acard" data-cat="posture oneday" data-reveal>
+        <div class="acard__fig">
+          <img src="assets/img/ba/asymmetry-01.jpg" width="794" height="1123" alt="원데이 비대칭 교정 1회 수업 후" loading="lazy"
+               data-lb="assets/img/ba/asymmetry-01.jpg" data-cap="원데이 비대칭 교정 — 1회 수업 후">
+        </div>
+        <div class="acard__b">
+          <div class="acard__top"><ul class="chips"><li class="is-key">체형교정</li><li>원데이 1회</li></ul><button class="acard__more" type="button" data-lb="assets/img/ba/asymmetry-02.jpg" data-cap="원데이 비대칭 교정 — 선 자세"><img src="assets/img/ba/asymmetry-02.jpg" alt="" loading="lazy"><span>사진 +1</span></button></div>
+          <h3 class="acard__t">원데이 비대칭 교정</h3>
+          <p class="acard__d">한쪽으로 치우쳐 있던 몸통을 앉은 자세와 선 자세에서 확인했습니다. 수업 한 번 뒤 척추 중심선이 가운데로 돌아왔습니다.</p>
+        </div>
+      </article>
+
+      <article class="acard" data-cat="posture oneday" data-reveal>
+        <div class="acard__fig">
+          <img src="assets/img/ba/movement-latpull.jpg" width="794" height="1123" alt="랫풀다운 원데이 운동 교정 전후" loading="lazy"
+               data-lb="assets/img/ba/movement-latpull.jpg" data-cap="운동 교정 — 원데이 운동 교정 사례">
+        </div>
+        <div class="acard__b">
+          <ul class="chips"><li class="is-key">운동 교정</li><li>원데이 1회</li></ul>
+          <h3 class="acard__t">같은 랫풀다운, 다른 등 쓰임</h3>
+          <p class="acard__d">혼자 운동하던 회원님의 랫풀다운 자세를 한 번의 수업으로 바로잡았습니다. 어깨가 아니라 등으로 당기는 감각부터 익힙니다.</p>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="notice" style="margin-top:clamp(20px,2.4vw,32px)" data-reveal="fade">
+      <h5>안내</h5>
+      <p>
+        게시된 사진은 회원 본인의 동의를 받아 사용하고 있으며, 얼굴 등은 가려서 게시합니다. 운동 효과는 초기 체형과 생활 습관, 수업 빈도에 따라 사람마다 다르게 나타나고
+        같은 기간에 같은 결과를 보장하지 않습니다. 촬영 자세와 거리에 따라 사진에 차이가 있을 수 있습니다. 통증이나 질환이 있다면 상담 단계에서 알려주세요. 강도를 조정해 진행합니다.
+      </p>
+    </div>
   </div>
 </section>
 
 <!-- ============ PROGRAM TYPES ============ -->
-<section class="sec sec--mist" style="padding-top:clamp(64px,8vw,120px)">
+<section class="sec">
   <div class="wrap">
     <div class="sec__head" style="max-width:640px">
       <p class="eyebrow" data-reveal="fade">Program</p>
@@ -214,143 +600,6 @@
         <h3 class="prog__t">산전 · 산후 / 성장기 / 시니어<small>LIFE STAGE</small></h3>
         <p class="prog__d">연령과 라이프스타일에 맞춘 1:1 프로그램을 제공합니다. 같은 동작이라도 시기에 따라 강도와 범위를 달리 잡습니다.</p>
       </article>
-    </div>
-  </div>
-</section>
-
-<!-- ============ STAGE ============ -->
-<section class="sec">
-  <div class="wrap">
-    <div class="sec__head tc" style="max-width:620px;margin-inline:auto">
-      <p class="eyebrow eyebrow--center" style="justify-content:center" data-reveal="fade">Real Change</p>
-      <h2 class="display d-lg" data-reveal="line" style="margin-top:18px"><span class="ln"><span>변화는 <em class="d-it">과정에서</em></span></span></h2>
-    </div>
-
-    <div class="stage">
-      <div class="stage__i" data-reveal>
-        <p class="stage__lab">BEFORE</p>
-        <p class="stage__ko">현재 상태를 기록합니다</p>
-      </div>
-      <div class="stage__ar" data-reveal="fade" style="--d:80ms">
-        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </div>
-      <div class="stage__i is-mid" data-reveal style="--d:120ms">
-        <p class="stage__lab">PROCESS</p>
-        <p class="stage__ko">50분을 5단계로 씁니다</p>
-      </div>
-      <div class="stage__ar" data-reveal="fade" style="--d:200ms">
-        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </div>
-      <div class="stage__i" data-reveal style="--d:240ms">
-        <p class="stage__lab">AFTER</p>
-        <p class="stage__ko">같은 각도로 다시 찍습니다</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ FEATURED CASE ============ -->
-<section class="sec sec--sand">
-  <div class="wrap case">
-    <div class="case__head">
-      <div>
-        <span class="case__tag" data-reveal="fade">FEATURED CASE</span>
-        <h2 class="case__title" data-reveal="line"><span class="ln"><span>10일간의 <em>변화</em></span></span></h2>
-      </div>
-      <div class="case__meta" data-reveal="fade" style="--d:140ms">
-        <div><span>PERIOD</span><b>10일 · 주 3회</b></div>
-        <div><span>PROGRAM</span><b>체형교정 + PT</b></div>
-        <div><span>BRANCH</span><b>IN BLUE</b></div>
-      </div>
-    </div>
-
-    <div data-reveal>
-      <div class="ba" data-ba>
-        <div class="ba__img ba__before slot" data-slot>
-          <img src="assets/img/ba/case01-before.jpg" alt="회원 변화 전">
-          <div class="slot__ph"><img src="assets/img/logo-mark.jpg" alt=""><b>BEFORE 사진 위치</b><code>assets/img/ba/case01-before.jpg</code></div>
-          <span class="ba__lab">BEFORE</span>
-        </div>
-        <div class="ba__img ba__after slot" data-slot>
-          <img src="assets/img/ba/case01-after.jpg" alt="회원 변화 후">
-          <div class="slot__ph"><img src="assets/img/logo-mark.jpg" alt=""><b>AFTER 사진 위치</b><code>assets/img/ba/case01-after.jpg</code></div>
-          <span class="ba__lab">AFTER</span>
-        </div>
-        <div class="ba__handle"><i>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M9 6 3 12l6 6M15 6l6 6-6 6"/></svg>
-        </i></div>
-      </div>
-      <p class="ba__hint">가운데 손잡이를 좌우로 끌어 비교해 보세요</p>
-    </div>
-
-    <div class="tl">
-      <div class="tl__row">
-        <div class="tl__i" data-reveal><span class="tl__n">STEP 01</span><h4 class="tl__t">체형 분석</h4><p class="tl__d">정면·측면·후면 사진을 찍고 좌우 차이와 관절 가동범위를 기록합니다.</p></div>
-        <div class="tl__i" data-reveal style="--d:90ms"><span class="tl__n">STEP 02</span><h4 class="tl__t">근막이완</h4><p class="tl__d">동작을 막고 있는 부위부터 풀어 가동범위를 확보합니다.</p></div>
-        <div class="tl__i" data-reveal style="--d:180ms"><span class="tl__n">STEP 03</span><h4 class="tl__t">필라테스</h4><p class="tl__d">기구로 정렬을 잡고 무너진 움직임 패턴을 다시 입력합니다.</p></div>
-        <div class="tl__i" data-reveal style="--d:270ms"><span class="tl__n">STEP 04</span><h4 class="tl__t">코어 안정화</h4><p class="tl__d">잡아놓은 정렬이 일상에서도 유지되도록 중심을 붙듭니다.</p></div>
-        <div class="tl__i" data-reveal style="--d:360ms"><span class="tl__n">STEP 05</span><h4 class="tl__t">웨이트 트레이닝</h4><p class="tl__d">버틸 힘을 올립니다. 여기까지 와야 바뀐 체형이 되돌아가지 않습니다.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ CASE LIST ============ -->
-<section class="sec">
-  <div class="wrap">
-    <div class="sec__head" style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap">
-      <div style="max-width:560px">
-        <p class="eyebrow" data-reveal="fade">Records</p>
-        <h2 class="display d-md" data-reveal="line"><span class="ln"><span>회원님들의 기록</span></span></h2>
-        <p class="body-ko" data-reveal style="--d:140ms">모두 본인 동의를 받아 게시한 사진입니다.</p>
-      </div>
-      <a class="btn btn--line btn--sm" href="reservation.html" data-reveal="fade"><span>나도 시작하기</span></a>
-    </div>
-
-    <div class="cases">
-      <article class="cbox" data-reveal>
-        <div class="pair">
-          <figure class="slot" data-slot><img src="assets/img/ba/case02-before.jpg" alt=""><div class="slot__ph"><img src="assets/img/logo-mark.jpg" alt=""><b>BEFORE</b><code>ba/case02-before.jpg</code></div><figcaption>BEFORE</figcaption></figure>
-          <figure class="slot" data-slot><img src="assets/img/ba/case02-after.jpg" alt=""><div class="slot__ph"><img src="assets/img/logo-mark.jpg" alt=""><b>AFTER</b><code>ba/case02-after.jpg</code></div><figcaption>AFTER</figcaption></figure>
-        </div>
-        <div class="cbox__b">
-          <ul class="cbox__k"><li>체형교정</li><li>8주</li></ul>
-          <h4 class="cbox__t">말린 어깨와 거북목</h4>
-          <p class="cbox__d">책상 앞에서 하루를 보내던 회원. 가슴과 흉추를 먼저 열고 등 근육을 붙이는 순서로 진행했습니다.</p>
-        </div>
-      </article>
-
-      <article class="cbox" data-reveal style="--d:110ms">
-        <div class="pair">
-          <figure class="slot" data-slot><img src="assets/img/ba/case03-before.jpg" alt=""><div class="slot__ph"><img src="assets/img/logo-mark.jpg" alt=""><b>BEFORE</b><code>ba/case03-before.jpg</code></div><figcaption>BEFORE</figcaption></figure>
-          <figure class="slot" data-slot><img src="assets/img/ba/case03-after.jpg" alt=""><div class="slot__ph"><img src="assets/img/logo-mark.jpg" alt=""><b>AFTER</b><code>ba/case03-after.jpg</code></div><figcaption>AFTER</figcaption></figure>
-        </div>
-        <div class="cbox__b">
-          <ul class="cbox__k"><li>다이어트</li><li>12주</li></ul>
-          <h4 class="cbox__t">체중보다 라인이 먼저</h4>
-          <p class="cbox__d">감량 폭은 크지 않았지만 어깨선과 허리 라인이 달라졌습니다. 근육량을 지키며 진행한 결과입니다.</p>
-        </div>
-      </article>
-
-      <article class="cbox" data-reveal style="--d:220ms">
-        <div class="pair">
-          <figure class="slot" data-slot><img src="assets/img/ba/case04-before.jpg" alt=""><div class="slot__ph"><img src="assets/img/logo-mark.jpg" alt=""><b>BEFORE</b><code>ba/case04-before.jpg</code></div><figcaption>BEFORE</figcaption></figure>
-          <figure class="slot" data-slot><img src="assets/img/ba/case04-after.jpg" alt=""><div class="slot__ph"><img src="assets/img/logo-mark.jpg" alt=""><b>AFTER</b><code>ba/case04-after.jpg</code></div><figcaption>AFTER</figcaption></figure>
-        </div>
-        <div class="cbox__b">
-          <ul class="cbox__k"><li>산후 회복</li><li>16주</li></ul>
-          <h4 class="cbox__t">출산 이후의 복부</h4>
-          <p class="cbox__d">복부와 골반저 회복을 먼저 끝낸 뒤 근력 단계로 넘어갔습니다. 순서를 지키는 게 가장 빠른 길이었습니다.</p>
-        </div>
-      </article>
-    </div>
-
-    <div class="notice" style="margin-top:clamp(36px,4vw,56px)" data-reveal="fade">
-      <h5>안내</h5>
-      <p>
-        게시된 사진은 회원 본인의 동의를 받아 사용하고 있습니다. 운동 효과는 초기 체형과 생활 습관, 수업 빈도에 따라 사람마다 다르게 나타나며,
-        같은 기간에 같은 결과를 보장하지 않습니다. 통증이나 질환이 있는 경우에는 상담 단계에서 알려주시면 강도를 조정해 진행합니다.
-      </p>
     </div>
   </div>
 </section>
@@ -408,14 +657,39 @@
 
 <script src="assets/js/common.js"></script>
 <script>
-/* 사진 슬롯: 파일이 없으면 자동으로 안내 패널을 띄우고, 파일을 넣으면 그대로 노출됩니다. */
-document.querySelectorAll('[data-slot]').forEach(function (slot) {
-  var img = slot.querySelector('img');
-  if (!img) return;
-  var fail = function () { slot.classList.add('is-empty'); };
-  if (img.complete && img.naturalWidth === 0) fail();
-  img.addEventListener('error', fail);
-});
+/* 사례 분류: 버튼을 누르면 해당 분류의 카드만 남깁니다. 숫자는 카드에서 바로 셉니다. */
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.acard'));
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('[data-filter]'));
+  function has(card, key) {
+    return key === 'all' || (' ' + card.getAttribute('data-cat') + ' ').indexOf(' ' + key + ' ') > -1;
+  }
+  function count(key) {
+    return cards.filter(function (c) { return has(c, key); }).length;
+  }
+  buttons.forEach(function (btn) {
+    var sup = btn.querySelector('sup');
+    if (sup) sup.textContent = count(btn.getAttribute('data-filter'));
+    btn.addEventListener('click', function () {
+      var key = btn.getAttribute('data-filter');
+      buttons.forEach(function (b) {
+        var on = b === btn;
+        b.classList.toggle('is-on', on);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      cards.forEach(function (c) {
+        var show = has(c, key);
+        c.hidden = !show;
+        if (show) c.classList.add('is-in');
+      });
+    });
+  });
+  document.querySelectorAll('[data-sum]').forEach(function (el) {
+    var small = el.querySelector('small');
+    el.firstChild.nodeValue = String(count(el.getAttribute('data-sum')));
+    if (small) el.appendChild(small);
+  });
+})();
 </script>
 </body>
 </html>
