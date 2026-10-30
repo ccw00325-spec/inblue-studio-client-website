@@ -13,7 +13,7 @@
 | `index.html` | Introduction to IN BLUE / 인블루 소개 | 브랜드 소개, 3대 프로그램(PILATES + PT + CONDITIONING), 50분 수업 흐름 |
 | `branch.html` | Branch Introduction / 지점소개 | 상단 탭으로 **장안점 / 성내점** 전환, 시설 사진·특징·보유 기구 |
 | `instructor.html` | Instructor Introduction / 강사소개 | 상단 탭으로 지점 전환, 신승현 대표(장안) · 임도영 대표(성내) 자격/경력 |
-| `before-after.html` | Before & After / 비포애프터 | 프로그램 4종, BEFORE → PROCESS → AFTER, 변화 슬라이더, 사례 카드 |
+| `before-after.html` | Before & After / 비포애프터 | 대표 사례 비교 슬라이더, 인바디 수치(숫자로 남은 변화), 분류 탭이 있는 사례 카드 14개, 프로그램 4종 |
 | `reservation.html` | Reservation / 일일 체험 예약 | CHOOSE YOUR STUDIO, 지점별 사진·강사·네이버 플레이스, **상담 예약 폼** |
 | `admin.html` | (비공개) | 접수된 상담 문의 확인 · 전화 연결 · 상태 관리 |
 
@@ -66,8 +66,11 @@ D:\PT\
       ├─ seongnae-01 ~ 07       성내점 시설 사진
       ├─ instructor-lim.jpg     임도영 대표 프로필
       ├─ instructor-shin.jpg    신승현 대표 프로필
-      └─ ba\                    ★ Before & After 사진 넣는 곳 (README.txt 참고)
+      └─ ba\                    Before & After 사진 (README.txt 에 파일별 용도)
 ```
+
+검사는 `npm test` 로 돌립니다(문의 API, 페이지가 참조하는 파일 존재, 비포애프터 사진 용량, 강사·지점 짝).
+GitHub Actions 를 못 쓸 때는 같은 `.github/workflows/ci.yml` 을 로컬 CI 도구로 돌립니다.
 
 ---
 
