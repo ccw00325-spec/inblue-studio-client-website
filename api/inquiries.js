@@ -138,7 +138,8 @@ async function removeRow(id) {
 
 async function requireAdmin(req, res) {
   if (await isAdmin(req)) return true;
-  res.setHeader('WWW-Authenticate', 'Basic realm="IN BLUE Admin", charset="UTF-8"');
+  // WWW-Authenticate 를 보내지 않는다. 보내면 브라우저가 사용자 이름·비밀번호 창을 따로 띄운다.
+  // 로그인은 관리자 화면의 비밀번호 입력란 하나로만 한다.
   json(res, 401, { error: '관리자 인증이 필요합니다.' });
   return false;
 }

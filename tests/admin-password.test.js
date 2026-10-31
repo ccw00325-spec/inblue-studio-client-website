@@ -48,6 +48,12 @@ test('staff password starts from env, can be changed, and the master password ke
     assert.equal(await canList('master-secret'), true);
     assert.equal(await canList('wrong'), false);
 
+    // 브라우저 기본 로그인 창(사용자 이름·비밀번호)이 뜨지 않아야 한다.
+    const denied = mockResponse();
+    await inquiriesHandler({ method: 'GET', url: '/api/inquiries', headers: {}, query: {} }, denied);
+    assert.equal(denied.statusCode, 401);
+    assert.equal(denied.headers['www-authenticate'], undefined);
+
     assert.equal((await change('wrong', 'abcd')).status, 401);
     assert.match((await change('initial-staff', 'ab')).json.error, /4~64자/);
     assert.match((await change('initial-staff', 'ab cd')).json.error, /공백/);
