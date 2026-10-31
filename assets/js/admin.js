@@ -204,6 +204,57 @@
     login($('adminPassword').value);
   });
   $('logoutBtn').addEventListener('click', function () { logout('안전하게 로그아웃되었습니다.'); });
+
+  function openPasswordModal() {
+    $('pwForm').reset();
+    $('pwError').textContent = '';
+    $('pwModal').classList.add('is-on');
+    setTimeout(function () { $('pwCurrent').focus(); }, 50);
+  }
+  function closePasswordModal() {
+    $('pwModal').classList.remove('is-on');
+    $('pwForm').reset();
+  }
+  $('pwBtn').addEventListener('click', openPasswordModal);
+  $('pwCancel').addEventListener('click', closePasswordModal);
+  $('pwModal').addEventListener('click', function (event) { if (event.target === $('pwModal')) closePasswordModal(); });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && $('pwModal').classList.contains('is-on')) closePasswordModal();
+  });
+  $('pwForm').addEventListener('submit', async function (event) {
+    event.preventDefault();
+    var current = $('pwCurrent').value;
+    var next = $('pwNext').value;
+    var confirmNext = $('pwConfirm').value;
+    if (next !== confirmNext) {
+      $('pwError').textContent = '새 비밀번호 확인이 일치하지 않습니다.';
+      $('pwConfirm').focus();
+      return;
+    }
+    var button = $('pwForm').querySelector('button[type="submit"]');
+    button.disabled = true;
+    button.querySelector('span').textContent = '변경 중입니다';
+    $('pwError').textContent = '';
+    try {
+      var response = await fetch('/api/admin-password', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ current: current, next: next, confirm: confirmNext }),
+        credentials: 'same-origin'
+      });
+      var data = await response.json().catch(function () { return {}; });
+      if (!response.ok) throw new Error(data.error || '비밀번호를 바꾸지 못했습니다.');
+      A.setPassword(next);
+      sessionStorage.setItem(PASSWORD_KEY, next);
+      closePasswordModal();
+      toast('관리자 비밀번호를 변경했습니다');
+    } catch (error) {
+      $('pwError').textContent = error.message;
+    } finally {
+      button.disabled = false;
+      button.querySelector('span').textContent = '변경하기';
+    }
+  });
   $('bell').addEventListener('click', function (event) { event.stopPropagation(); $('drop').classList.toggle('is-on'); });
   document.addEventListener('click', function (event) { if (!$('drop').contains(event.target)) $('drop').classList.remove('is-on'); });
   $('drop').addEventListener('click', function (event) {

@@ -40,9 +40,13 @@
 ### 데이터 저장 및 관리자 보안
 
 - 문의는 `api/inquiries.js` Vercel Function을 통해 **Private Vercel Blob**에 건별 저장됩니다.
-- 공개 예약 화면은 문의 등록만 할 수 있습니다. 목록 조회·상태 변경·삭제는 `ADMIN_PASSWORD` 인증이 필요합니다.
+- 공개 예약 화면은 문의 등록만 할 수 있습니다. 목록 조회·상태 변경·삭제는 관리자 비밀번호가 필요합니다.
+- 관리자 비밀번호는 두 가지입니다(`api/_auth.js`).
+  - **관리자 비밀번호:** 관리자 화면 우측 상단 **비밀번호 변경** 버튼으로 바꿉니다. 바꾼 값은 Private Blob(`settings/admin-password.json`)에 scrypt 해시로만 저장되고, 이전 값은 바로 쓸 수 없게 됩니다. 한 번도 바꾸지 않았다면 `ADMIN_STAFF_PASSWORD` 환경 변수가 초기값입니다.
+  - **비상용 마스터 비밀번호:** `ADMIN_PASSWORD` 환경 변수. 화면에서 바꿀 수 없고, 관리자 비밀번호를 잊었을 때 이것으로 로그인해 다시 정합니다.
+- 틀린 비밀번호에는 응답을 0.6초 늦춰 여러 번 넣어 보기 어렵게 합니다.
 - 관리자 비밀번호는 브라우저 탭의 세션 저장소에만 유지되며, 로그아웃하거나 탭을 닫으면 삭제됩니다.
-- Vercel 프로젝트에는 Private Blob 연결과 `ADMIN_PASSWORD` 환경 변수가 필요합니다.
+- Vercel 프로젝트에는 Private Blob 연결과 `ADMIN_PASSWORD`, `ADMIN_STAFF_PASSWORD` 환경 변수가 필요합니다. 비밀번호 값은 저장소(공개)에 적지 않습니다.
 - 로컬 개발은 `npm run dev`로 실행하며, 미리보기 관리자 비밀번호는 `preview-password`입니다.
 
 ---
