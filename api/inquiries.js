@@ -1,7 +1,8 @@
-import { timingSafeEqual, randomBytes } from 'node:crypto';
+import { randomBytes } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { del, get, list, put } from '@vercel/blob';
+import { hasBlobCredentials, isAdmin } from './_auth.js';
 
 const PREFIX = 'inquiries/';
 const ALLOWED_BRANCHES = new Set(['장안점', '성내점']);
@@ -59,10 +60,6 @@ export function validateInquiry(input) {
       memo: cleanText(input.memo, 1000)
     }
   };
-}
-
-function hasBlobCredentials() {
-  return Boolean(process.env.BLOB_READ_WRITE_TOKEN || (process.env.BLOB_STORE_ID && process.env.VERCEL_OIDC_TOKEN));
 }
 
 function localFile() {
@@ -139,29 +136,8 @@ async function removeRow(id) {
   await del(PREFIX + id + '.json');
 }
 
-function safeEqual(actual, expected) {
-  const a = Buffer.from(String(actual));
-  const b = Buffer.from(String(expected));
-  return a.length === b.length && timingSafeEqual(a, b);
-}
-
-function isAdmin(req) {
-  const expected = process.env.ADMIN_PASSWORD;
-  if (!expected) return false;
-  const header = String(req.headers?.authorization || '');
-  if (!header.startsWith('Basic ')) return false;
-  try {
-    const decoded = Buffer.from(header.slice(6), 'base64').toString('utf8');
-    const separator = decoded.indexOf(':');
-    const password = separator >= 0 ? decoded.slice(separator + 1) : '';
-    return safeEqual(password, expected);
-  } catch (_) {
-    return false;
-  }
-}
-
-function requireAdmin(req, res) {
-  if (isAdmin(req)) return true;
+async function requireAdmin(req, res) {
+  if (await isAdmin(req)) return true;
   res.setHeader('WWW-Authenticate', 'Basic realm="IN BLUE Admin", charset="UTF-8"');
   json(res, 401, { error: '관리자 인증이 필요합니다.' });
   return false;
@@ -190,7 +166,7 @@ export default async function handler(req, res) {
       return json(res, 201, { id: row.id, createdAt: row.createdAt });
     }
 
-    if (!requireAdmin(req, res)) return;
+    if (!(await requireAdmin(req, res))) return;
 
     if (method === 'GET') {
       return json(res, 200, { inquiries: await listRows() });

@@ -46,6 +46,8 @@ test('rejects malformed personal data', () => {
 test('creates, protects, updates and deletes inquiries', async () => {
   const folder = await mkdtemp(path.join(os.tmpdir(), 'inblue-api-'));
   process.env.INBLUE_DATA_FILE = path.join(folder, 'rows.json');
+  process.env.INBLUE_PASSWORD_FILE = path.join(folder, 'admin-password.json');
+  process.env.INBLUE_AUTH_DELAY_MS = '0';
   process.env.ADMIN_PASSWORD = 'test-admin-password';
   delete process.env.BLOB_READ_WRITE_TOKEN;
   delete process.env.BLOB_STORE_ID;

@@ -49,6 +49,26 @@ body.is-locked .auth{ display:grid; }
 .ahead__link{ font-size:12.5px; color:var(--gray); border-bottom:1px solid var(--line-strong); padding-bottom:1px; }
 .ahead__link:hover{ color:var(--navy); border-color:var(--navy); }
 .ahead__logout{ font-size:12px; color:var(--gray); border-bottom:1px solid var(--line-strong); }
+.ahead__pw{
+  display:inline-flex; align-items:center; gap:7px; height:36px; padding:0 14px; border-radius:999px;
+  border:1px solid var(--line-strong); background:#fff; font-size:12.5px; font-weight:600; color:var(--navy-deep);
+  transition:.3s var(--ease);
+}
+.ahead__pw:hover{ border-color:var(--navy); background:var(--navy); color:#fff; }
+
+/* ===== Password modal ===== */
+.pwm{ position:fixed; inset:0; z-index:400; display:grid; place-items:center; padding:20px; background:rgba(11,20,54,.45); opacity:0; visibility:hidden; transition:.35s var(--ease); }
+.pwm.is-on{ opacity:1; visibility:visible; }
+.pwm__box{ width:min(420px,100%); background:#fff; border:1px solid var(--line); padding:clamp(26px,4vw,40px); box-shadow:0 30px 90px rgba(11,20,54,.22); transform:translateY(10px); transition:transform .45s var(--ease); }
+.pwm.is-on .pwm__box{ transform:none; }
+.pwm h2{ font-size:21px; color:var(--navy-deep); letter-spacing:-.04em; }
+.pwm__desc{ margin:8px 0 22px; color:var(--gray); font-size:12.5px; line-height:1.8; }
+.pwm label{ display:block; margin:14px 0 7px; font-size:12px; font-weight:700; color:var(--navy-deep); }
+.pwm input{ width:100%; height:48px; padding:0 14px; border:1px solid var(--line-strong); background:#fff; font-size:15px; }
+.pwm input:focus{ outline:none; border-color:var(--navy); }
+.pwm__error{ min-height:20px; margin-top:12px; color:#C32E31; font-size:12.5px; line-height:1.6; }
+.pwm__acts{ display:grid; grid-template-columns:1fr 1.4fr; gap:8px; margin-top:8px; }
+.pwm__acts .btn{ width:100%; }
 
 /* ===== Bell ===== */
 .bell{ position:relative; width:46px; height:46px; border-radius:50%; border:1px solid var(--line-strong); display:grid; place-items:center; color:var(--navy-deep); background:#fff; transition:.35s var(--ease); }
@@ -229,6 +249,10 @@ tbody tr.is-new:hover{ background:rgba(224,56,59,.07); }
     <div class="ahead__right">
       <span class="ahead__clock" id="clock"></span>
       <a class="ahead__link" href="reservation.html" target="_blank">예약 페이지 열기</a>
+      <button class="ahead__pw" id="pwBtn" type="button">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10.5" width="16" height="10" rx="2"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></svg>
+        비밀번호 변경
+      </button>
       <button class="ahead__logout" id="logoutBtn">로그아웃</button>
       <div style="position:relative">
         <button class="bell" id="bell" aria-label="알림">
@@ -345,6 +369,24 @@ tbody tr.is-new:hover{ background:rgba(224,56,59,.07); }
     </div>
   </div>
 </aside>
+
+<div class="pwm" id="pwModal" role="dialog" aria-modal="true" aria-labelledby="pwTitle">
+  <form class="pwm__box" id="pwForm">
+    <h2 id="pwTitle">관리자 비밀번호 변경</h2>
+    <p class="pwm__desc">바꾸면 이전 비밀번호로는 더 이상 로그인할 수 없습니다.<br>4자 이상, 공백 없이 입력해 주세요.</p>
+    <label for="pwCurrent">현재 비밀번호</label>
+    <input type="password" id="pwCurrent" autocomplete="current-password" required>
+    <label for="pwNext">새 비밀번호</label>
+    <input type="password" id="pwNext" autocomplete="new-password" minlength="4" maxlength="64" required>
+    <label for="pwConfirm">새 비밀번호 확인</label>
+    <input type="password" id="pwConfirm" autocomplete="new-password" minlength="4" maxlength="64" required>
+    <p class="pwm__error" id="pwError" role="alert" aria-live="polite"></p>
+    <div class="pwm__acts">
+      <button class="btn btn--line" type="button" id="pwCancel"><span>취소</span></button>
+      <button class="btn btn--fill" type="submit"><span>변경하기</span></button>
+    </div>
+  </form>
+</div>
 
 <div class="toast" id="toast"><i></i><span id="toastMsg"></span></div>
 

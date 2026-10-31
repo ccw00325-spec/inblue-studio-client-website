@@ -2,6 +2,7 @@ import { createReadStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
 import http from 'node:http';
 import path from 'node:path';
+import passwordHandler from '../api/admin-password.js';
 import handler from '../api/inquiries.js';
 
 const root = process.cwd();
@@ -20,14 +21,14 @@ const types = {
 };
 
 const server = http.createServer(async (req, res) => {
-  if (req.url.startsWith('/api/inquiries')) {
+  if (req.url.startsWith('/api/inquiries') || req.url.startsWith('/api/admin-password')) {
     const chunks = [];
     for await (const chunk of req) chunks.push(chunk);
     if (chunks.length) {
       try { req.body = JSON.parse(Buffer.concat(chunks).toString('utf8')); } catch (_) { req.body = null; }
     }
     req.query = Object.fromEntries(new URL(req.url, 'http://localhost').searchParams);
-    return handler(req, res);
+    return req.url.startsWith('/api/admin-password') ? passwordHandler(req, res) : handler(req, res);
   }
 
   const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
